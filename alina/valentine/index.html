@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+	<style src="https://fonts.googleapis.com/css?family=Roboto+Mono:100"></style>
+	<style>
+		html,
+		body {
+			font-family: 'Roboto Mono', monospace;
+			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat center top / cover;
+		}
+
+		.container {
+			height: 100%;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			display: flex;
+		}
+
+		.text {
+			font-weight: 100;
+			font-size: 28px;
+			color: cyan;
+		}
+
+		.dud {
+			color: blanchedalmond;
+		}
+
+		#background {
+			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat center top / cover;
+		}
+
+		#heart {
+			width: 100px;
+			height: 90px;
+			margin: 200px auto auto auto;
+			animation: b 1.5s ease-in-out infinite;
+		}
+
+		#heart:before,
+		#heart:after {
+			position: absolute;
+			content: "";
+			left: 50px;
+			top: 0;
+			width: 50px;
+			height: 80px;
+			background: darkorange;
+			-moz-border-radius: 50px 50px 0 0;
+			-webkit-border-radius: 50px;
+			border-radius: 50px 50px 0 0;
+			-moz-transform: rotate(-45deg);
+			-ms-transform: rotate(-45deg);
+			-webkit-transform: rotate(-45deg);
+			transform: rotate(-45deg);
+			-moz-transform-origin: 0 100%;
+			-ms-transform-origin: 0 100%;
+			-webkit-transform-origin: 0 100%;
+			transform-origin: 0 100%;
+		}
+
+		#heart:after {
+			left: 0;
+			-moz-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+			transform: rotate(45deg);
+			-moz-transform-origin: 100% 100%;
+			-ms-transform-origin: 100% 100%;
+			-webkit-transform-origin: 100% 100%;
+			transform-origin: 100% 100%;
+		}
+
+		@keyframes b {
+			0% {
+				-moz-transform: scale(1, 1);
+				-ms-transform: scale(1, 1);
+				-webkit-transform: scale(1, 1);
+				transform: scale(1, 1);
+			}
+
+			50% {
+				-moz-transform: scale(1.1, 1.1);
+				-ms-transform: scale(1.1, 1.1);
+				-webkit-transform: scale(1.1, 1.1);
+				transform: scale(1.1, 1.1);
+			}
+
+			100% {
+				-moz-transform: scale(1, 1);
+				-ms-transform: scale(1, 1);
+				-webkit-transform: scale(1, 1);
+				transform: scale(1, 1);
+			}
+		}
+	</style>
+	<script>
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+		var TextScramble = function () {
+			function TextScramble(el) {
+				_classCallCheck(this, TextScramble);
+
+				this.el = el;
+				this.chars = '!<>-_\\/[]{}—=+*^?#________';
+				this.update = this.update.bind(this);
+			}
+
+			TextScramble.prototype.setText = function setText(newText) {
+				var _this = this;
+
+				var oldText = this.el.innerText;
+				var length = Math.max(oldText.length, newText.length);
+				var promise = new Promise(function (resolve) {
+					return _this.resolve = resolve;
+				});
+				this.queue = [];
+				for (var i = 0; i < length; i++) {
+					var from = oldText[i] || '';
+					var to = newText[i] || '';
+					var start = Math.floor(Math.random() * 40);
+					var end = start + Math.floor(Math.random() * 40);
+					this.queue.push({ from: from, to: to, start: start, end: end });
+				}
+				cancelAnimationFrame(this.frameRequest);
+				this.frame = 0;
+				this.update();
+				return promise;
+			};
+
+			TextScramble.prototype.update = function update() {
+				var output = '';
+				var complete = 0;
+				for (var i = 0, n = this.queue.length; i < n; i++) {
+					var _queue$i = this.queue[i];
+					var from = _queue$i.from;
+					var to = _queue$i.to;
+					var start = _queue$i.start;
+					var end = _queue$i.end;
+					var char = _queue$i.char;
+
+					if (this.frame >= end) {
+						complete++;
+						output += to;
+					} else if (this.frame >= start) {
+						if (!char || Math.random() < 0.28) {
+							char = this.randomChar();
+							this.queue[i].char = char;
+						}
+						output += '<span class="dud">' + char + '</span>';
+					} else {
+						output += from;
+					}
+				}
+				this.el.innerHTML = output;
+				if (complete === this.queue.length) {
+					this.resolve();
+				} else {
+					this.frameRequest = requestAnimationFrame(this.update);
+					this.frame++;
+				}
+			};
+
+			TextScramble.prototype.randomChar = function randomChar() {
+				return this.chars[Math.floor(Math.random() * this.chars.length)];
+			};
+
+			return TextScramble;
+		}();
+
+
+		var start = function start() {
+			var phrases = [
+				'Alina',
+				'I want to say a lot',
+				'but I can\'t say all',
+				'i\'m happy',
+				'to be with you',
+				'I hope',
+				'everything\'s going to be OK',
+				'with us',
+				'singly or together',
+				'regardless of how',
+				''
+			];
+
+			var el = document.querySelector('.text');
+			var fx = new TextScramble(el);
+
+			var counter = 0;
+			var next = function next() {
+				fx.setText(phrases[counter]).then(function () {
+					setTimeout(next, 1500);
+				});
+				counter = (counter + 1) % phrases.length;
+			};
+			next();
+		};
+
+	</script>
+</head>
+
+<body onload="start()">
+	<div id="background">
+		<div id="heart" onclick="iLoveYou()"></div>
+	</div>
+
+	<div class="container">
+		<div class="text"></div>
+	</div>
+</body>
+
+</html>
