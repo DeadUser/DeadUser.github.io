@@ -5,10 +5,18 @@
 	<title></title>
 	<style src="https://fonts.googleapis.com/css?family=Roboto+Mono:100"></style>
 	<style>
-		html,
 		body {
+			height: 100%;
+			width: 100%;
 			font-family: 'Roboto Mono', monospace;
-			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat center top / cover;
+			background-color: #222;
+		}
+
+		.background {
+			padding: 5%;
+			height: 100%;
+			width: 100%;
+			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") no-repeat center / cover;
 		}
 
 		.container {
@@ -29,19 +37,15 @@
 			color: blanchedalmond;
 		}
 
-		#background {
-			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat center top / cover;
-		}
-
-		#heart {
+		.heart {
 			width: 100px;
-			height: 90px;
-			margin: 200px auto auto auto;
+			height: 100px;;
+			margin: 300px auto;
 			animation: b 1.5s ease-in-out infinite;
 		}
 
-		#heart:before,
-		#heart:after {
+		.heart:before,
+		.heart:after {
 			position: absolute;
 			content: "";
 			left: 50px;
@@ -62,7 +66,7 @@
 			transform-origin: 0 100%;
 		}
 
-		#heart:after {
+		.heart:after {
 			left: 0;
 			-moz-transform: rotate(45deg);
 			-ms-transform: rotate(45deg);
@@ -204,12 +208,14 @@
 </head>
 
 <body onload="start()">
-	<div id="background">
-		<div id="heart" onclick="iLoveYou()"></div>
-	</div>
+	<div class="background">
 
-	<div class="container">
-		<div class="text"></div>
+		<div class="heart"></div>
+
+		<div class="container">
+			<div class="text"> </div>
+		</div>
+
 	</div>
 </body>
 
