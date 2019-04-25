@@ -5,32 +5,29 @@
 	<title></title>
 	<style src="https://fonts.googleapis.com/css?family=Roboto+Mono:100"></style>
 	<style>
+		html,
+		body,
+		div {
+			margin: 0px;
+			padding: 0px;
+			border: 0px;
+		}
+
 		body {
 			height: 100%;
 			width: 100%;
-			font-family: 'Roboto Mono', monospace;
-			background-color: #222;
-		}
-
-		.background {
-			padding: 5%;
-			height: 100%;
-			width: 100%;
-			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") no-repeat center / cover;
-		}
-
-		.container {
-			height: 100%;
-			width: 100%;
-			justify-content: center;
-			align-items: center;
-			display: flex;
+			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat;
+			padding-top: 10%;
 		}
 
 		.text {
-			font-weight: 100;
+			font-family: 'Roboto Mono', monospace;
 			font-size: 28px;
-			color: cyan;
+			width: 100%;
+			height: 56px;
+			justify-content: center;
+			display: flex;
+			color: rgb(0, 225, 255);
 		}
 
 		.dud {
@@ -38,76 +35,49 @@
 		}
 
 		.heart {
-			width: 100px;
-			height: 100px;;
-			margin: 300px auto;
+			margin: 10% 60% 10% 40%;
+			width: 100%;
+			height: 0px;
 			animation: b 1.5s ease-in-out infinite;
 		}
 
 		.heart:before,
 		.heart:after {
-			position: absolute;
-			content: "";
-			left: 50px;
-			top: 0;
 			width: 50px;
 			height: 80px;
-			background: darkorange;
-			-moz-border-radius: 50px 50px 0 0;
-			-webkit-border-radius: 50px;
+			background: rgb(255, 0, 15);
+			position: absolute;
+			content: "";
 			border-radius: 50px 50px 0 0;
-			-moz-transform: rotate(-45deg);
-			-ms-transform: rotate(-45deg);
-			-webkit-transform: rotate(-45deg);
+
+			left: 50px;
 			transform: rotate(-45deg);
-			-moz-transform-origin: 0 100%;
-			-ms-transform-origin: 0 100%;
-			-webkit-transform-origin: 0 100%;
 			transform-origin: 0 100%;
 		}
 
 		.heart:after {
 			left: 0;
-			-moz-transform: rotate(45deg);
-			-ms-transform: rotate(45deg);
-			-webkit-transform: rotate(45deg);
 			transform: rotate(45deg);
-			-moz-transform-origin: 100% 100%;
-			-ms-transform-origin: 100% 100%;
-			-webkit-transform-origin: 100% 100%;
 			transform-origin: 100% 100%;
 		}
 
 		@keyframes b {
 			0% {
-				-moz-transform: scale(1, 1);
-				-ms-transform: scale(1, 1);
-				-webkit-transform: scale(1, 1);
 				transform: scale(1, 1);
 			}
 
 			50% {
-				-moz-transform: scale(1.1, 1.1);
-				-ms-transform: scale(1.1, 1.1);
-				-webkit-transform: scale(1.1, 1.1);
 				transform: scale(1.1, 1.1);
 			}
 
 			100% {
-				-moz-transform: scale(1, 1);
-				-ms-transform: scale(1, 1);
-				-webkit-transform: scale(1, 1);
 				transform: scale(1, 1);
 			}
 		}
 	</style>
 	<script>
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 		var TextScramble = function () {
 			function TextScramble(el) {
-				_classCallCheck(this, TextScramble);
-
 				this.el = el;
 				this.chars = '!<>-_\\/[]{}—=+*^?#________';
 				this.update = this.update.bind(this);
@@ -115,7 +85,6 @@
 
 			TextScramble.prototype.setText = function setText(newText) {
 				var _this = this;
-
 				var oldText = this.el.innerText;
 				var length = Math.max(oldText.length, newText.length);
 				var promise = new Promise(function (resolve) {
@@ -175,19 +144,17 @@
 			return TextScramble;
 		}();
 
-
 		var start = function start() {
 			var phrases = [
-				'Alina',
-				'I want to say a lot',
-				'but I can\'t say all',
-				'i\'m happy',
-				'to be with you',
-				'I hope',
-				'everything\'s going to be OK',
-				'with us',
-				'singly or together',
-				'regardless of how',
+				'Alina', 'all words seems stupid',
+				'but i will try', 'to say something',
+				'',
+				'you are beautiful',
+				'i wish you', 'many good feelings',
+				'i lost my mind', 'and i cant', 'to believe in you',
+				'because you are perfect',
+				'i love you',
+				'thanks for you are',
 				''
 			];
 
@@ -208,15 +175,8 @@
 </head>
 
 <body onload="start()">
-	<div class="background">
-
-		<div class="heart"></div>
-
-		<div class="container">
-			<div class="text"> </div>
-		</div>
-
-	</div>
+	<div class="text"></div>
+	<div class="heart"></div>
 </body>
 
 </html>
