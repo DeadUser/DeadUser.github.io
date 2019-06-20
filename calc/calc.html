@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<link rel="stylesheet" crossorigin="anonymous"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
+
+<body class="bg-dark text-light">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-md-8 order-md-1 ">
+
+                <h4 class="m-2">Калькулятор шлангов</h4>
+                <input id="amount" type="text" value="20" class="form-control m-2"
+                    placeholder="Введите количество шлангов">
+                <div class="m-2">
+                    <button type="button" class="btn btn-light" onclick="addInputs()">Сгенерировать</button>
+                    <button type="button" class="btn btn-light" onclick="removeInputs()">Отчистить</button>
+                </div>
+
+                <div id="inputs" class="m-2"></div>
+                <button type="button" class="btn btn-light m-2 w-100">Посчитать</button>
+            </div>
+            <div class="col-md-4 order-md-2">
+                <div class="m-2">
+                    <p class="">
+                        <br>всего шлангов: 20
+                        <br>длина бобины: 200
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    removeInputs();
+
+    function removeInputs() {
+        document.getElementById('inputs').innerHTML = '';
+        current = 0;
+        tubes = [];
+        bundleLength = 200;
+        max = 20;
+    }
+
+    function addInput() {
+        if (current < max) {
+            document.getElementById('inputs').innerHTML +=
+                '<input type="text" class="form-control m-1 tube" placeholder="Введите длину шланга">';
+            current++;
+        }
+    }
+
+    function addInputs() {
+        var howMach = document.getElementById('amount').value;
+        for (var i = 0; i < howMach; i++) addInput();
+    }
+
+    function calculate() {
+        tubes = document.getElementsByClassName('tube');
+
+    }
+</script>
+
+</html>
