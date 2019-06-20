@@ -11,7 +11,7 @@
             <div class="col-md-8 order-md-1 ">
 
                 <h4 class="m-2">Калькулятор шлангов</h4>
-                <input id="txt_amount" type="text" value="" class="form-control m-2"
+                <input id="txt_amount" type="number" max="200" value="" class="form-control m-2"
                     placeholder="Введите количество шлангов">
                 <div class="m-2 w-100">
                     <button type="button" class="btn btn-light" onclick="addInputs()">Сгенерировать</button>
@@ -53,7 +53,7 @@
     function addInput() {
         if (current < max) {
             document.getElementById('inputs').innerHTML +=
-                '<input type="text" class="form-control m-1 tube" placeholder="Введите длину шланга">';
+                '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга">';
             current++;
         }
     }
