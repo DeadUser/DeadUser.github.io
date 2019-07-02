@@ -11,8 +11,8 @@
             <div class="col-md-8 order-md-1 ">
 
                 <h4 class="m-2">Калькулятор шлангов</h4>
-                <input id="txt_amount" type="number" max="200" value="" class="form-control m-2"
-                    placeholder="Введите количество шлангов">
+                <input id="txt_amount" type="number" max="200" class="form-control m-2"
+                    placeholder="Введите количество шлангов" value="10">
                 <div class="m-2 w-100">
                     <button type="button" class="btn btn-light" onclick="addInputs()">Сгенерировать</button>
                     <button type="button" class="btn btn-light" onclick="removeInputs()">Отчистить</button>
@@ -45,6 +45,7 @@
         document.getElementById('inputs').innerHTML = '';
         current = 0;
         tubes = [];
+        combinations = [];
         bundleLength = 200;
         max = 20;
         showProgress(0, 100);
@@ -63,61 +64,69 @@
         for (var i = 0; i < howMach; i++) addInput();
     }
 
-    function calculate() {
-        var elements = document.getElementsByClassName('tube');
-        showProgress(1, 100);
-
-        for (var i = 0; i < elements.length; i++) {
-            tubes.push({
-                weight: elements[i].value,
-                previous: [],
-                needtodo: true,
-                inbandle: false
-            })
-        }
-        
-        // calculateСomplexity();
-        getBestMatch(tubes);
-
-        showProgress(5, 100);
-
-        debugger;
-    }
-
-    function getBestMatch(tubes) {
-
-
-    }
-
-    function getBundle(tubes, tube) {
-        if (tube) {
-            tube.needtodo = false;
-            weight += tube.length;
-
-
-        }
-        for (var i = 0; i < tubes.length; i++) {
-            if (tube.needtodok)
-                getBundle(tubes, tube);
-        }
-    }
-
-    function step(tube) {
-        tube.needtodo = false;
-        weight += tube.length;
-    }
-
     function showProgress(cur, all) {
         var percent = (cur / all) * 100;
         var progress = document.getElementById('bar_progress');
         progress.style.width = percent + '%';
     }
 
-    /* tube
-    length:
-    needtodo: true
-  
-    */
+    function calculate() {
+        var elements = document.getElementsByClassName('tube');
+        showProgress(1, 100);
+
+        for (var i = 0; i < elements.length; i++) {
+            tubes.push({
+                id: String(i),
+                weight: elements[i].value,
+                previous: String(),
+                sumWeight: 0,
+            })
+        }
+
+        buildTree();
+        calculateCombinations();
+
+        showProgress(100, 100);
+    }
+
+    function buildTree(prevTube) {
+        if (!prevTube) {
+            prevTube = {
+                id: "root",
+                weight: 0,
+                previous: "",
+                sumWeight: 0,
+            }
+        }
+
+        debugger;
+        for (var i = 0; i < tubes.length; i++) {
+            newTube = tubes[i];
+            if (_.findIndex(prevTube.previous, function (o) { return o == newTube.id; }) !== -1) { return; }
+            else {
+                newTube.sumWeight = prevTube.sumWeight + newTube.weight;
+                if (newTube.sumWeight = 200) {
+                    newTube.previous = prevTube.previous + newTube.id;
+                    combinations.push({
+                        way: newTube.previous, weight: newTube.sumWeight
+                    })
+                    return;
+                }
+                else if (newTube.sumWeight > 200) {
+                    combinations.push({
+                        way: prevTube.previous, weight: prevTube.sumWeight
+                    });
+                    return;
+                }
+                else if (newTube.sumWeight < 200) {
+                    newTube.previous = prevTube.previous + newTube.id;
+                    newTube.sumWeight = prevTube.sumWeight + newTube.wight;
+                }
+            }
+
+            buildTree(newTube);
+        }
+    }
 </script>
 
 </html>
