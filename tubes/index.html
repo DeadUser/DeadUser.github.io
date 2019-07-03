@@ -6,19 +6,22 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
 <script src="https://cdn.jsdelivr.net/lodash/4.10.0/lodash.js"></script>
 
-<body class="bg-dark text-light" onload="start()">
+<body class="text-light" onload="restart()" style="background-color: #000033">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-8 order-md-1 ">
+            <div class="col-md-8 order-md-1">
 
                 <h4 class="m-2">Калькулятор шлангов</h4>
                 <input id="txt_amount" type="number" max="200" class="form-control m-2"
                     placeholder="Введите количество шлангов" value="10">
-                <div class="m-2 w-100">
-                    <button type="button" class="btn btn-light float-left" style="width:49%"
-                        onclick="addInputs()">Сгенерировать</button>
-                    <button type="button" class="btn btn-light float-right" style="width:49%"
-                        onclick="removeInputs()">Отчистить</button>
+                <div class="m-2 w-100" style="height:50px">
+                    <button type="button" class="btn btn-light float-left" style="width:49%" onclick="addInputs()">
+                        Сгенерировать
+                    </button>
+                    <button type="button" class="btn btn-light float-right" style="width:49%" onclick="removeInputs()">
+                        Отчистить
+                    </button>
+
                 </div>
 
                 <div id="inputs" class="m-2"></div>
@@ -31,10 +34,12 @@
             </div>
             <div class="col-md-4 order-md-2">
                 <div class="m-2">
-                    <p class="">
-                        <br>максимум шлангов: 20
-                        <br>длина бобины: 200
-                    </p>
+                    <br>максимум шлангов: 20
+                    <br>длина бобины: 200
+                    <div class="form-check ">
+                        <input type="checkbox" checked class="form-check-input" id="test_data">
+                        <label class="form-check-label" for="exampleCheck1">Тестовые данные</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,33 +47,36 @@
 </body>
 
 <script>
-    function start() {
+    function restart() {
         removeInputs();
         showProgress(0, 100);
-
         current = 0;
         tubes = [];
         combinations = [];
         bundleLength = 200;
-        max = 20;
-        showProgress(0, 100);
-    }
-
-    function removeInputs() {
+        maxTubes = 20;
         document.getElementById('inputs').innerHTML = '';
     }
 
-    function addInput() {
+    function addInputs() {
+        var testData = document.getElementById('test_data').checked;
+        var howMach = document.getElementById('txt_amount').value;
+        for (var i = 0; i < howMach; i++) addInput(testData);
+        current = 0;
+    }
+
+    function addInput(testData) {
         if (current < maxTubes) {
+            var val = (testData) ? String(current + 40) : "";
             document.getElementById('inputs').innerHTML +=
-                '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга">';
+                '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга" value="' + val + '">';
             current++;
         }
     }
 
-    function addInputs() {
-        var howMach = document.getElementById('txt_amount').value;
-        for (var i = 0; i < howMach; i++) addInput();
+    function removeInputs() {
+        document.getElementById('inputs').innerHTML = '';
+        showProgress(0, 100);
     }
 
     function showProgress(cur, all) {
@@ -77,22 +85,29 @@
         progress.style.width = percent + '%';
     }
 
+    function showProgress(per) {
+        var percent = per * 100;
+        var progress = document.getElementById('bar_progress');
+        progress.style.width = String(Math.trunc(percent)) + '%';
+    }
+
     function calculate() {
         showProgress(0, 100);
 
         var elements = document.getElementsByClassName('tube');
 
-        _.forEach(elements, function (e) {
+        for (var i = 0; i < elements.length; i++)
             tubes.push({
                 id: String(i),
                 weight: elements[i].value,
                 previous: String(),
                 sumWeight: 0,
-            })
-        }
+            });
 
-        buildTree();
-        calculateCombinations();
+        buildTree(null);
+
+        var u = combinations;
+        //calculateCombinations();
 
         showProgress(100, 100);
     }
@@ -102,18 +117,21 @@
             prevTube = {
                 id: "root",
                 weight: 0,
-                previous: "",
-                sumWeight: 0,
+                previous: String(),
+                sumWeight: Number(),
             }
         }
-
-        debugger;
+        (tubes.length * tubes.length)
         for (var i = 0; i < tubes.length; i++) {
             newTube = tubes[i];
+            if (newTube.previous.length == 1) {
+                var per = ((i + 1) / tubes.length) * 0.6;
+                showProgress(per, 100);
+            }
             if (_.findIndex(prevTube.previous, function (o) { return o == newTube.id; }) !== -1) { return; }
             else {
-                newTube.sumWeight = prevTube.sumWeight + newTube.weight;
-                if (newTube.sumWeight = 200) {
+                newTube.sumWeight = Number(prevTube.sumWeight) + Number(newTube.weight);
+                if (newTube.sumWeight == 200) {
                     newTube.previous = prevTube.previous + newTube.id;
                     combinations.push({
                         way: newTube.previous, weight: newTube.sumWeight
@@ -128,12 +146,13 @@
                 }
                 else if (newTube.sumWeight < 200) {
                     newTube.previous = prevTube.previous + newTube.id;
-                    newTube.sumWeight = prevTube.sumWeight + newTube.wight;
+                    newTube.sumWeight = Number(prevTube.sumWeight) + Number(newTube.weight);
                 }
             }
 
             buildTree(newTube);
         }
+        showProgress(60, 100);
     }
 </script>
 
