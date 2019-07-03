@@ -4,8 +4,9 @@
 <link rel="stylesheet" crossorigin="anonymous"
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
+<script src="https://cdn.jsdelivr.net/lodash/4.10.0/lodash.js"></script>
 
-<body class="bg-dark text-light">
+<body class="bg-dark text-light" onload="start()">
     <div class="container">
         <div class="row w-100">
             <div class="col-md-8 order-md-1 ">
@@ -14,8 +15,10 @@
                 <input id="txt_amount" type="number" max="200" class="form-control m-2"
                     placeholder="Введите количество шлангов" value="10">
                 <div class="m-2 w-100">
-                    <button type="button" class="btn btn-light" onclick="addInputs()">Сгенерировать</button>
-                    <button type="button" class="btn btn-light" onclick="removeInputs()">Отчистить</button>
+                    <button type="button" class="btn btn-light float-left" style="width:49%"
+                        onclick="addInputs()">Сгенерировать</button>
+                    <button type="button" class="btn btn-light float-right" style="width:49%"
+                        onclick="removeInputs()">Отчистить</button>
                 </div>
 
                 <div id="inputs" class="m-2"></div>
@@ -39,10 +42,10 @@
 </body>
 
 <script>
-    removeInputs();
+    function start() {
+        removeInputs();
+        showProgress(0, 100);
 
-    function removeInputs() {
-        document.getElementById('inputs').innerHTML = '';
         current = 0;
         tubes = [];
         combinations = [];
@@ -51,8 +54,12 @@
         showProgress(0, 100);
     }
 
+    function removeInputs() {
+        document.getElementById('inputs').innerHTML = '';
+    }
+
     function addInput() {
-        if (current < max) {
+        if (current < maxTubes) {
             document.getElementById('inputs').innerHTML +=
                 '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга">';
             current++;
@@ -71,10 +78,11 @@
     }
 
     function calculate() {
-        var elements = document.getElementsByClassName('tube');
-        showProgress(1, 100);
+        showProgress(0, 100);
 
-        for (var i = 0; i < elements.length; i++) {
+        var elements = document.getElementsByClassName('tube');
+
+        _.forEach(elements, function (e) {
             tubes.push({
                 id: String(i),
                 weight: elements[i].value,
