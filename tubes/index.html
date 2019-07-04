@@ -2,20 +2,20 @@
 
 <html>
 
+<title>Калькулятор шлангов</title>
+
 <link rel="stylesheet" crossorigin="anonymous"
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
-<script src="https://cdn.jsdelivr.net/lodash/4.10.0/lodash.js"></script>
 
-
-<body class="text-light" onload="restart()" style="background-color: #000033">
+<body class="text-light" onload="restart()" style="background-color: #002">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-8 order-md-1">
+            <div class="col-md-6 order-md-1">
 
-                <h4 class="m-2">Калькулятор шлангов</h4>
+                <h4 class="m-2"></h4>
                 <input id="txt_amount" type="number" max="200" class="form-control m-2"
-                    placeholder="Введите количество шлангов" value="10">
+                    placeholder="Введите количество шлангов" value="5">
                 <div class="m-2 w-100" style="height:50px">
                     <button type="button" class="btn btn-light float-left" style="width:49%" onclick="addInputs()">
                         Сгенерировать
@@ -32,14 +32,15 @@
                     <div id="bar_progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"
                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <h4 id="result" class="m-2" style="color:red"></h4>
+                <h4 id="result" class="m-2 col-md-12" style="color:red"></h4>
             </div>
+
             <div class="col-md-4 order-md-2">
                 <div class="m-2">
                     <br>максимум шлангов: 20
                     <br>длина бобины: 200
                     <div class="form-check ">
-                        <input type="checkbox" checked class="form-check-input" id="test_data">
+                        <input type="checkbox" checked class="form-check-input" id="need_to_test">
                         <label class="form-check-label" for="exampleCheck1">Тестовые данные</label>
                     </div>
                 </div>
@@ -51,160 +52,189 @@
 
 <script>
     function restart() {
-        showProgress(0, 100);
+        // ui elements
+        uiInputs = document.getElementById('inputs');
+        itIsTest = document.getElementById('need_to_test');
+        uiTubesAmount = document.getElementById('txt_amount');
+        uiProgress = document.getElementById('bar_progress');
+        uiResult = document.getElementById('result');
+        // start functions
+        clear();
+        sp(0, 100);
+        // data
         current = Number();
         tubes = Array();
         nodes = Array();
-        bundles = Array();
-        combinationsBundles = Array();
-        combinationsBundlesWithAllTubes = Array();
-        map = String();
+        packs = Array();
+        allTubes = String();
+        // consts
         bundleLength = Number(200);
         maxTubes = Number(20);
-        document.getElementById('inputs').innerHTML = String();
-        iterate = Number(0);
     }
 
-    function getTubeId(num) {
-        return String('abcdefghijklmnopqrstuvwxyz'[num]);
+    function clear() {
+        uiInputs.innerHTML = String();
+        uiResult.innerHTML = String();
+    }
+
+    function numberToSymbol(num) {
+        return 'abcdefghijklmnopqrstuvwxyz' [num];
     }
 
     function addInputs() {
-        var testData = document.getElementById('test_data').checked;
-        var howMach = document.getElementById('txt_amount').value;
-        for (var i = 0; i < howMach; i++) addInput(testData);
-        current = 0;
+        for (var i = 0; i < uiTubesAmount.valueAsNumber; i++) addInput();
     }
 
-    function addInput(testData) {
-        if (current < maxTubes) {
-            var val = (testData) ? String((Math.random() * 50 + 20).toFixed()) : "";
-            document.getElementById('inputs').innerHTML +=
-                '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга" value="' + val + '">';
-            current++;
-        }
+    function addInput() {
+        if (current >= maxTubes) return;
+
+        var val = (itIsTest.checked) ? String((Math.random() * 50 + 20).toFixed()) : "";
+        inputs.innerHTML +=
+            '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга" value="' +
+            val + '">';
+        current++;
     }
 
-    function showProgress(cur, all) {
-        var percent = (cur / all) * 100;
-        var progress = document.getElementById('bar_progress');
-        progress.style.width = percent + '%';
+    function sp(percent) {
+        uiProgress.style.width = percent + '%';
     }
 
-    function showProgress(per) {
-        var percent = per * 100;
-        var progress = document.getElementById('bar_progress');
-        progress.style.width = String(Math.trunc(percent)) + '%';
-    }
-
-    function calculate() {
-        showProgress(0, 100);
-
+    function readTubesData() {
         var elements = document.getElementsByClassName('tube');
 
         for (var i = 0; i < elements.length; i++)
             tubes.push({
-                id: String(getTubeId(i)),
+                id: numberToSymbol(i),
                 length: Number(elements[i].value).toFixed(2),
             });
 
-        map = _.sortBy(_.map(tubes, 'id'));
+    }
+
+    function calculate() {
+        sp(0);
+
+        readTubesData();
+
+        sp(5);
+
+        allTubes = tubes.map(x => x.id).sort();
 
         buildTree({
-            id: "root",
             tubes: Array(),
             length: Number(),
         });
 
-        calculateCombinationsBundles({ id: "root", tubes: [], bundles: [] });
-        debugger;
+        sp(10);
 
-        var combs = getCombinationsBundlesContainsAllTubes();
-        var topFive = combs.slice(0, 4);
-        debugger;
+        nodes.sort((a, b) => a.useful - b.useful).reverse();
 
-        showBestResults(topFive)
+        sp(15);
 
-        showProgress(100, 100);
+        calculatePacks({
+            tubes: [],
+            bundles: []
+        });
+
+        sp(95);
+
+        packs.sort((a, b) => a.bundles.length - b.bundles.length);
+
+        var results = packs.slice(0, 100);
+
+        //выбрать с самым крупным остатком по 1й
+
+        showResults(results)
+
+        sp(100, 100);
     }
 
-    function showBestResults(topFive) {
-        var result = document.getElementById('result');
-        result.innerHTML = '';
-        for (var i = 0; i < topFive.length; i++) {
-            result.innerHTML += '';
-
+    function showResults(results) {
+        for (var i = 0; i < results.length; i++) {
+            var e = results[i].bundles.map(x => x.spent - x.useful);
+            var extra = e.reduce((a, b) => a + b);
+            var lengths = Number();
+            uiResult.innerHTML +=
+                ' бобин: ' + results[i].bundles.length +
+                '; длины: ' + results[i].bundles.map(b => b.useful).join(' и ') +
+                '; остаток: ' + e.join(' и ') +
+                '; всего: ' + String(extra) +
+                '.<br><br>';
         }
-        result.innerHTML += 'overpayment: ' + String(Math.trunc(overpayment)) + '<br>';
     }
 
-    function getCombinationsBundlesContainsAllTubes() {
-        var combs = _.filter(combinationsBundles, function (o) { return o.tubes == map });
-        return _.sortBy(combs, ['bundles.length']);
-    }
+    function calculatePacks(currentPack) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (packs.length > 100) return;
+            sp(15 + (packs.length / 100));
 
-    function calculateCombinationsBundles(curCombination) {
-        if (combinationsBundlesWithAllTubes > 100) return;
-
-        for (var i = 0; i < bundles.length; i++) {
-            if (_.intersection(curCombination.tubes, bundles[i].tubes).length == 0) {
-
-                var concat = _.sortBy(_.concat(bundles[i].tubes, curCombination.tubes)).join('');
-                var combination = _.concat(curCombination.bundles, [bundles[i]]);
-                var newCombinations = {
+            if (intersect(currentPack.tubes, nodes[i].tubes).length == 0) {
+                var concat = currentPack.tubes.concat(nodes[i].tubes).sort();
+                var pack = currentPack.bundles.concat([nodes[i]]);
+                var newPack = {
+                    id: packs.length,
                     tubes: concat,
-                    bundles: combination
+                    bundles: pack,
+                    useful: pack.map(x => x.useful).reduce((a, b) => a + b)
                 };
-                combinationsBundles.push(newCombinations);
 
-                if (_.isEqual(newCombinations.concat, map))
-                    combinationsBundlesWithAllTubes.push(newCombinations);
+                if (equals(newPack.tubes, allTubes))
+                    addPack(newPack);
                 else
-                    calculateCombinationsBundles(newCombinations);
+                    calculatePacks(newPack);
             }
         }
     }
 
+    function addPack(newPack) {
+        tubes = tubes.sort();
+        var some = packs.map(x => x.bundles).some(y => equals(y, newPack.bundles));
+        if (!some)
+            packs.push(newPack);
+    }
+
     function addBundle(tubes, length) {
         tubes = tubes.sort();
-        var map = bundles.map(x => x.tubes).i
-        if (_.findIndex(bundles, function (o) { return _.isEqual(o.tubes, tubes); }) === -1)
-            bundles.push({
-                id: bundles.length,
+        var some = nodes.map(x => x.tubes).some(x => equals(x, tubes));
+        if (!some)
+            nodes.push({
+                id: nodes.length,
                 tubes: tubes,
                 useful: Number(length),
                 spent: Number(bundleLength)
             });
     }
 
-    function equals(a, b) {
-        if (a.length != b.length) return false;
-
-        var i = a.length;
-        while (i--)
-            if (a[i] !== b[i]) return false;
-
-        return true;
-    }
-
     function buildTree(prev) {
         for (var i = 0; i < tubes.length; i++) {
 
             if (prev.tubes.includes(tubes[i].id))
-                continue;
+                return;
 
             var node = {
-                tubes: prev.concat(tubes[i].id).sort(),
-                length: prev.length + tubes[i].length,
+                tubes: prev.tubes.concat([tubes[i].id]).sort(),
+                length: Number(prev.length) + Number(tubes[i].length),
             };
 
             if (node.length > 200)
-                continue;
+                return;
 
             addBundle(node.tubes, node.length);
 
             buildTree(node);
         }
+    }
+
+    function equals(a, b) {
+        if (a.length !== b.length) return false;
+        return intersect(a, b).length === b.length;
+    }
+
+    function intersect(a, b) {
+        var t;
+        if (b.length > a.length) t = b, b = a, a = t;
+        return a.filter(function (e) {
+            return b.indexOf(e) > -1;
+        });
     }
 </script>
 
