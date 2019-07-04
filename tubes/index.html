@@ -11,31 +11,33 @@
 <body class="text-light" onload="restart()" style="background-color: #002">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-6 order-md-1">
+            <div class="col-md-4 order-md-1">
 
                 <h4 class="m-2"></h4>
                 <input id="txt_amount" type="number" max="200" class="form-control m-2"
                     placeholder="Введите количество шлангов" value="5">
                 <div class="m-2 w-100" style="height:50px">
-                    <button type="button" class="btn btn-light float-left" style="width:49%" onclick="addInputs()">
+                    <button id='btn_generate' type="button" class="btn btn-light float-left" style="width:49%"
+                        onclick="addInputs()">
                         Сгенерировать
                     </button>
-                    <button type="button" class="btn btn-light float-right" style="width:49%" onclick="restart()">
+                    <button id='btn_clear' type="button" class="btn btn-light float-right" style="width:49%"
+                        onclick="restart()">
                         Отчистить
                     </button>
 
                 </div>
 
                 <div id="inputs" class="m-2"></div>
-                <button type="button" class="btn btn-light m-2 w-100" onclick="calculate()">Посчитать</button>
+                <button id='btn_calculate' type="button" class="btn btn-light m-2 w-100"
+                    onclick="calculate()">Посчитать</button>
                 <div class="progress ml-2 w-100">
                     <div id="bar_progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"
                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <h4 id="result" class="m-2 col-md-12" style="color:red"></h4>
             </div>
 
-            <div class="col-md-4 order-md-2">
+            <div class="col-md-8 order-md-2">
                 <div class="m-2">
                     <br>максимум шлангов: 20
                     <br>длина бобины: 200
@@ -43,6 +45,7 @@
                         <input type="checkbox" checked class="form-check-input" id="need_to_test">
                         <label class="form-check-label" for="exampleCheck1">Тестовые данные</label>
                     </div>
+                    <div id="result" class="m-2 w-100" style="color:#faa"></div>
                 </div>
             </div>
         </div>
@@ -58,6 +61,9 @@
         uiTubesAmount = document.getElementById('txt_amount');
         uiProgress = document.getElementById('bar_progress');
         uiResult = document.getElementById('result');
+        uiBtnGenerate = document.getElementById('btn_generate');
+        uiBtnClear = document.getElementById('btn_clear');
+        uiBtnCalculate = document.getElementById('btn_calculate');
         // start functions
         clear();
         sp(0, 100);
@@ -78,7 +84,7 @@
     }
 
     function numberToSymbol(num) {
-        return 'abcdefghijklmnopqrstuvwxyz' [num];
+        return 'abcdefghijklmnopqrstuvwxyz'[num];
     }
 
     function addInputs() {
@@ -96,7 +102,7 @@
     }
 
     function sp(percent) {
-        uiProgress.style.width = percent + '%';
+        setTimeout(function () { uiProgress.style.width = percent + '%'; }, 1000);
     }
 
     function readTubesData() {
@@ -138,12 +144,10 @@
         sp(95);
 
         packs.sort((a, b) => a.bundles.length - b.bundles.length);
-
-        var results = packs.slice(0, 100);
-
-        //выбрать с самым крупным остатком по 1й
-
-        showResults(results)
+        packs = packs.filter((e) => packs[0].bundles.length == e.bundles.length);
+        packs.sort((a, b) => a.bundles.length - b.bundles.length);
+        packs = packs.slice(0, 10);
+        showResults(packs)
 
         sp(100, 100);
     }
@@ -154,18 +158,19 @@
             var extra = e.reduce((a, b) => a + b);
             var lengths = Number();
             uiResult.innerHTML +=
-                ' бобин: ' + results[i].bundles.length +
-                '; длины: ' + results[i].bundles.map(b => b.useful).join(' и ') +
-                '; остаток: ' + e.join(' и ') +
-                '; всего: ' + String(extra) +
-                '.<br><br>';
+                '<br>всего бобин: ' + results[i].bundles.length +
+                ';<br>отрезки: ' + results[i].bundles.map(b => b.useful).join(' и ') +
+                ';<br>отрезки: | ' + results[i].bundles.map(b => b.tubes.map(t => Number(tubes.find(s => s.id == t).length)) + ' |') +
+                ';<br>остатки: ' + e.join(' и ') +
+                ';<br>весь остаток: ' + String(extra) +
+                '.<br>';
         }
     }
 
     function calculatePacks(currentPack) {
         for (var i = 0; i < nodes.length; i++) {
             if (packs.length > 100) return;
-            sp(15 + (packs.length / 100));
+            sp(15 + (packs.length * 0.8));
 
             if (intersect(currentPack.tubes, nodes[i].tubes).length == 0) {
                 var concat = currentPack.tubes.concat(nodes[i].tubes).sort();
@@ -232,9 +237,7 @@
     function intersect(a, b) {
         var t;
         if (b.length > a.length) t = b, b = a, a = t;
-        return a.filter(function (e) {
-            return b.indexOf(e) > -1;
-        });
+        return a.filter((e) => b.indexOf(e) > -1);
     }
 </script>
 
