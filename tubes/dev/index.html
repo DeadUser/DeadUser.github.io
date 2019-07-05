@@ -8,49 +8,69 @@
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
 
+<style>
+    footer {
+        position: fixed;
+        height: 40px;
+        bottom: 0;
+        width: 100%;
+        background-color: black;
+    }
+</style>
+
 <body class="text-light" onload="restart()" style="background-color: #002">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-4 order-md-1">
+            <div class="col-md-6 order-md-1">
+                <h1 class="m-2">Калькулятор</h1>
 
-                <h4 class="m-2"></h4>
-                <input id="txt_amount" type="number" max="200" class="form-control m-2"
-                    placeholder="Введите количество шлангов" value="5">
                 <div class="m-2 w-100" style="height:50px">
-                    <button id='btn_generate' type="button" class="btn btn-light float-left" style="width:49%"
-                        onclick="addInputs()">
-                        Сгенерировать
+                    <button id='btn_calculate' type="button" class="btn btn-light float-left mr-2" style="width:30%"
+                        onclick="calculate()">
+                        Посчитать
                     </button>
-                    <button id='btn_clear' type="button" class="btn btn-light float-right" style="width:49%"
+                    <button id='btn_clear' type="button" class="btn btn-light float-left mr-2" style="width:30%"
                         onclick="restart()">
                         Отчистить
                     </button>
-
+                    <button id='btn_generate' type="button" class="btn btn-light float-right" style="width:30%"
+                        onclick="addInputs()">
+                        Тест
+                    </button>
                 </div>
 
-                <div id="inputs" class="m-2"></div>
-                <button id='btn_calculate' type="button" class="btn btn-light m-2 w-100"
-                    onclick="calculate()">Посчитать</button>
                 <div class="progress ml-2 w-100">
                     <div id="bar_progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"
                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+
+                <div class="input-group m-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="tube_id">Id</span>
+                    </div>
+                    <input type="number" class="form-control" min="0" max="200" placeholder="Длина" id="tube_length">
+                    <input type="text" class="form-control rounded-right" placeholder="Коментарий" id="tube_desc">
+                    <button id='btn_add_tube' type="button" class="btn btn-light float-left ml-2"
+                        onclick="addTube()">+</button>
+                </div>
+
+                <div id="inputs" class="m-2"></div>
             </div>
 
-            <div class="col-md-8 order-md-2">
-                <div class="m-2">
-                    <br>максимум шлангов: 20
-                    <br>длина бобины: 200
-                    <div class="form-check ">
-                        <input type="checkbox" checked class="form-check-input" id="need_to_test">
-                        <label class="form-check-label" for="exampleCheck1">Тестовые данные</label>
-                    </div>
-                    <div id="result" class="m-2 w-100" style="color:#faa"></div>
-                </div>
+            <div class="col-md-6 order-md-2">
+                <div id="result" class="m-2 w-100" style="color:#faa"></div>
             </div>
         </div>
     </div>
 
+    <footer class="footer">
+        <div class="float-left m-2">
+            <h6><small>максимум шлангов: 20; длина бобины: 200;</small></h6>
+        </div>
+        <div class="footer-copyright m-2 float-right">© 2019 Copyright:
+            <a href="mailto:egor.domozhirov@gmail.com"> egor.domozhirov@gmail.com</a>
+        </div>
+    </footer>
 </body>
 
 <script>
@@ -84,7 +104,7 @@
     }
 
     function numberToSymbol(num) {
-        return 'abcdefghijklmnopqrstuvwxyz'[num];
+        return 'abcdefghijklmnopqrstuvwxyz' [num];
     }
 
     function addInputs() {
@@ -102,7 +122,9 @@
     }
 
     function sp(percent) {
-        setTimeout(function () { uiProgress.style.width = percent + '%'; }, 1000);
+        setTimeout(function () {
+            uiProgress.style.width = percent + '%';
+        }, 1000);
     }
 
     function readTubesData() {
@@ -160,7 +182,8 @@
             uiResult.innerHTML +=
                 '<br>всего бобин: ' + results[i].bundles.length +
                 ';<br>отрезки: ' + results[i].bundles.map(b => b.useful).join(' и ') +
-                ';<br>отрезки: | ' + results[i].bundles.map(b => b.tubes.map(t => Number(tubes.find(s => s.id == t).length)) + ' |') +
+                ';<br>отрезки: | ' + results[i].bundles.map(b => b.tubes.map(t => Number(tubes.find(s => s.id == t)
+                    .length)) + ' |') +
                 ';<br>остатки: ' + e.join(' и ') +
                 ';<br>весь остаток: ' + String(extra) +
                 '.<br>';
