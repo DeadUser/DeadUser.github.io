@@ -9,6 +9,44 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
 
 <style>
+    .icon-plus {
+        background-color: #000;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        width: 16px;
+        height: 16px;
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+
+    .icon-plus:after {
+        background-color: #fff;
+        width: 8px;
+        height: 2px;
+        border-radius: 1px;
+        -webkit-border-radius: 1px;
+        -moz-border-radius: 1px;
+        position: absolute;
+        top: 7px;
+        left: 4px;
+        content: "";
+    }
+
+    .icon-plus:before {
+        background-color: #fff;
+        width: 2px;
+        height: 8px;
+        border-radius: 1px;
+        -webkit-border-radius: 1px;
+        -moz-border-radius: 1px;
+        position: absolute;
+        top: 4px;
+        left: 7px;
+        content: "";
+    }
+
     footer {
         position: fixed;
         height: 40px;
@@ -18,24 +56,20 @@
     }
 </style>
 
-<body class="text-light" onload="tubeCalculator()" style="background-color: #002">
+<body class="text-light" onload="tuber.clear()" style="background-color: #002">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-6 order-md-1">
+            <div class="col-md-6 order-md-1" style="min-width: 400px;">
                 <h1 class="m-2">Калькулятор</h1>
 
                 <div class="m-2 w-100" style="height:50px">
-                    <button id='btn_calculate' type="button" class="btn btn-light float-left mr-2" style="width:30%"
-                        onclick="calculate()">
+                    <button id='btn_calculate' type="button" class="btn btn-light float-left" style="width:49%"
+                        onclick="tuber.calculate()">
                         Посчитать
                     </button>
-                    <button id='btn_clear' type="button" class="btn btn-light float-left mr-2" style="width:30%"
-                        onclick="tubeCalculator()">
+                    <button id='btn_clear' type="button" class="btn btn-light float-right" style="width:49%"
+                        onclick="tuber.clear()">
                         Отчистить
-                    </button>
-                    <button id='btn_test' type="button" class="btn btn-light float-right" style="width:30%"
-                        onclick="addInputs()">
-                        Тест
                     </button>
                 </div>
 
@@ -49,21 +83,31 @@
                         <span class="input-group-text" id="tube_id">Id</span>
                     </div>
                     <input type="number" class="form-control" min="0" max="200" placeholder="Длина" id="tube_length">
-                    <input type="text" class="form-control rounded-right" placeholder="Коментарий" id="tube_desc">
-                    <button id='btn_add' type="button" class="btn btn-light float-left ml-2"
-                        onclick="addTube()">+</button>
+                    <input type="text" class="form-control rounded-right" maxlength="25" placeholder="Коментарий"
+                        id="tube_desc">
+                    <button id='btn_add' type="button" class="btn btn-light float-left ml-2" onclick="tuber.addTube()"
+                        title="Максимум шлангов: 20">
+                        <div class="icon icon-plus">
+                            <span class="name"></span>
+                        </div>
+                    </button>
                 </div>
 
-                <div id="inputs" class="m-2"></div>
+                <table class="table m-2 w-100 small" style="color:#faa">
+                    <tbody id="tubes"> </tbody>
+                </table>
             </div>
 
             <div class="col-md-6 order-md-2">
-                <div id="result" class="m-2 w-100" style="color:#faa"></div>
+                <table id="result" class="table m-2 w-100 small" style="color:#faa">
+
+                </table>
             </div>
         </div>
     </div>
 
     <footer class="footer">
+        <button id='btn_test' type="button" class="btn float-left m-2" onclick="tuber.test()">Тест</button>
         <div class="float-left m-2">
             <h6><small>максимум шлангов: 20; длина бобины: 200;</small></h6>
         </div>
@@ -74,196 +118,195 @@
 </body>
 
 <script>
-    function tubeCalculator() {
-        btnAdd = document.getElementById('btn_add');
-        btnClear = document.getElementById('btn_clear');
-        btnTest = document.getElementById('btn_test');
-        btnCalc = document.getElementById('btn_calculate');
+    var tuber = {
+        btnAdd: document.getElementById('btn_add'),
+        btnClear: document.getElementById('btn_clear'),
+        btnTest: document.getElementById('btn_test'),
+        btnCalc: document.getElementById('btn_calculate'),
+        progressbar: document.getElementById('progressbar'),
+        text1: document.getElementById('tube_length'),
+        text2: document.getElementById('tube_desc'),
+        data: document.getElementById('tubes'),
 
-        progressbar = document.getElementById('progressbar');
+        bundle: Number(200),
+        maximum: Number(20),
 
-        text1 = document.getElementById('tube_length');
-        text2 = document.getElementById('tube_desc');
+        tubes: Array(),
 
+        bundles: Array(),
+        nodes: Array(),
+        packs: Array(),
 
-
-        // data
-        current = Number();
-        tubes = Array();
-        nodes = Array();
-        packs = Array();
-        allTubes = String();
-        // consts
-        bundleLength = Number(200);
-        maxTubes = Number(20);
-
-        sp(0, 100);
-    }
-
-    function clear() {
-        uiInputs.innerHTML = String();
-        uiResult.innerHTML = String();
-    }
-
-    function numberToSymbol(num) {
-        return 'abcdefghijklmnopqrstuvwxyz' [num];
-    }
-
-    function addInputs() {
-        for (var i = 0; i < uiTubesAmount.valueAsNumber; i++) addInput();
-    }
-
-    function addInput() {
-        if (current >= maxTubes) return;
-
-        var val = (itIsTest.checked) ? String((Math.random() * 50 + 20).toFixed()) : "";
-        inputs.innerHTML +=
-            '<input type="number" max="200" class="form-control m-1 tube" placeholder="Введите длину шланга" value="' +
-            val + '">';
-        current++;
-    }
-
-    function sp(percent) {
-        setTimeout(function () {
-            uiProgress.style.width = percent + '%';
-        }, 1000);
-    }
-
-    function readTubesData() {
-        var elements = document.getElementsByClassName('tube');
-
-        for (var i = 0; i < elements.length; i++)
-            tubes.push({
-                id: numberToSymbol(i),
-                length: Number(elements[i].value).toFixed(2),
-            });
-
-    }
-
-    function calculate() {
-        sp(0);
-
-        readTubesData();
-
-        sp(5);
-
-        allTubes = tubes.map(x => x.id).sort();
-
-        buildTree({
-            tubes: Array(),
-            length: Number(),
-        });
-
-        sp(10);
-
-        nodes.sort((a, b) => a.useful - b.useful).reverse();
-
-        sp(15);
-
-        calculatePacks({
-            tubes: [],
-            bundles: []
-        });
-
-        sp(95);
-
-        packs.sort((a, b) => a.bundles.length - b.bundles.length);
-        packs = packs.filter((e) => packs[0].bundles.length == e.bundles.length);
-        packs.sort((a, b) => a.bundles.length - b.bundles.length);
-        packs = packs.slice(0, 10);
-        showResults(packs)
-
-        sp(100, 100);
-    }
-
-    function showResults(results) {
-        for (var i = 0; i < results.length; i++) {
-            var e = results[i].bundles.map(x => x.spent - x.useful);
-            var extra = e.reduce((a, b) => a + b);
-            var lengths = Number();
-            uiResult.innerHTML +=
-                '<br>всего бобин: ' + results[i].bundles.length +
-                ';<br>отрезки: ' + results[i].bundles.map(b => b.useful).join(' и ') +
-                ';<br>отрезки: | ' + results[i].bundles.map(b => b.tubes.map(t => Number(tubes.find(s => s.id == t)
-                    .length)) + ' |') +
-                ';<br>остатки: ' + e.join(' и ') +
-                ';<br>весь остаток: ' + String(extra) +
-                '.<br>';
-        }
-    }
-
-    function calculatePacks(currentPack) {
-        for (var i = 0; i < nodes.length; i++) {
-            if (packs.length > 100) return;
-            sp(15 + (packs.length * 0.8));
-
-            if (intersect(currentPack.tubes, nodes[i].tubes).length == 0) {
-                var concat = currentPack.tubes.concat(nodes[i].tubes).sort();
-                var pack = currentPack.bundles.concat([nodes[i]]);
-                var newPack = {
-                    id: packs.length,
-                    tubes: concat,
-                    bundles: pack,
-                    useful: pack.map(x => x.useful).reduce((a, b) => a + b)
-                };
-
-                if (equals(newPack.tubes, allTubes))
-                    addPack(newPack);
-                else
-                    calculatePacks(newPack);
-            }
-        }
-    }
-
-    function addPack(newPack) {
-        tubes = tubes.sort();
-        var some = packs.map(x => x.bundles).some(y => equals(y, newPack.bundles));
-        if (!some)
-            packs.push(newPack);
-    }
-
-    function addBundle(tubes, length) {
-        tubes = tubes.sort();
-        var some = nodes.map(x => x.tubes).some(x => equals(x, tubes));
-        if (!some)
-            nodes.push({
-                id: nodes.length,
-                tubes: tubes,
-                useful: Number(length),
-                spent: Number(bundleLength)
-            });
-    }
-
-    function buildTree(prev) {
-        for (var i = 0; i < tubes.length; i++) {
-
-            if (prev.tubes.includes(tubes[i].id))
-                return;
-
-            var node = {
-                tubes: prev.tubes.concat([tubes[i].id]).sort(),
-                length: Number(prev.length) + Number(tubes[i].length),
+        addTube: function () {
+            if (this.tubes.length > this.maximum) this.btnAdd.disabled = true;
+            var tube = {
+                id: this.numberToSymbol(this.tubes.length),
+                length: Number(this.text1.value).toFixed(2),
+                description: String(this.text2.value)
             };
+            if (tube.length <= 0 || tube.length > this.bundle) return;
+            this.tubes.push(tube);
+            this.drawTubes();
+        },
 
-            if (node.length > 200)
-                return;
+        drawTubes: function () {
+            this.data.innerHTML = String();
+            for (var i = this.tubes.length - 1; i >= 0; i--)
+                this.data.innerHTML += `<tr><td>${this.tubes[i].id}</td><td>${Number(this.tubes[i].length)}</td><td>${this.tubes[i].description}</td>
+                <td><button onclick="tuber.deleteTube('${this.tubes[i].id}')"></td></tr>`;
+        },
 
-            addBundle(node.tubes, node.length);
+        deleteTube: function (id) {
+            this.tubes = this.tubes.filter((e) => e.id != id);
+            this.drawTubes();
+        },
 
-            buildTree(node);
+        clear: function () {
+            this.tubes = [];
+            this.drawTubes();
+        },
+
+        numberToSymbol: function (num) {
+            return 'abcdefghijklmnopqrstuvwxyz'[num];
+        },
+
+        sp: function (percent) {
+            setTimeout(function () {
+                progressbar.style.width = percent + '%';
+            }, 1000);
+        },
+
+        test: function () {
+            this.clear();
+            for (var i = 0; i < 10; i++) {
+                var tube = {
+                    id: this.numberToSymbol(this.tubes.length),
+                    length: Number((Math.random() * 30) + 20).toFixed(2),
+                    description: String('Тестовый шланг')
+                };
+                if (tube.length <= 0 || tube.length > this.bundle) return;
+                this.tubes.push(tube);
+            }
+            this.drawTubes();
+            this.calculate();
+        },
+
+        calculate: function () {
+            this.sp(0);
+            this.tubes = this.tubes.sort((a, b) => a.length - b.length);
+            this.combineInBundles({ tubes: Array() });
+            this.sp(10);
+
+            debugger;
+            this.bundles.sort((a, b) => a.useful - b.useful).reverse();
+            this.sp(15);
+
+            calculatePacks({
+                tubes: [],
+                bundles: []
+            });
+
+            this.sp(95);
+
+            packs.sort((a, b) => a.bundles.length - b.bundles.length);
+            packs = packs.filter((e) => packs[0].bundles.length == e.bundles.length);
+            packs.sort((a, b) => a.bundles.length - b.bundles.length);
+            packs = packs.slice(0, 10);
+            showResults(packs)
+
+            this.sp(100, 100);
+        },
+
+        drawResults: function () {
+            for (var i = 0; i < results.length; i++) {
+                var e = results[i].bundles.map(x => x.spent - x.useful);
+                var extra = e.reduce((a, b) => a + b);
+                var lengths = Number();
+
+                var header = `<thead>
+                        <tr>
+                            <th scope="col">Бобины</th>
+                            <th scope="col">Длины</th>
+                            <th scope="col">Примечания</th>
+                        </tr>
+                    </thead>
+                    <tbody > </tbody>`
+
+                uiResult.innerHTML +=
+                    '<br>всего бобин: ' + results[i].bundles.length +
+                    ';<br>отрезки: ' + results[i].bundles.map(b => b.useful).join(' и ') +
+                    ';<br>отрезки: | ' + results[i].bundles.map(b => b.tubes.map(t => Number(tubes.find(s => s.id == t)
+                        .length)) + ' |') +
+                    ';<br>остатки: ' + e.join(' и ') +
+                    ';<br>весь остаток: ' + String(extra) +
+                    '.<br>';
+            }
+        },
+
+        calculatePacks: function (currentPack) {
+            for (var i = 0; i < nodes.length; i++) {
+                if (packs.length > 100) return;
+                sp(15 + (packs.length * 0.8));
+
+                if (intersect(currentPack.tubes, nodes[i].tubes).length == 0) {
+                    var concat = currentPack.tubes.concat(nodes[i].tubes).sort();
+                    var pack = currentPack.bundles.concat([nodes[i]]);
+                    var newPack = {
+                        id: packs.length,
+                        tubes: concat,
+                        bundles: pack,
+                        useful: pack.map(x => x.useful).reduce((a, b) => a + b)
+                    };
+
+                    if (equals(newPack.tubes, allTubes))
+                        addPack(newPack);
+                    else
+                        calculatePacks(newPack);
+                }
+            }
+        },
+
+        addPack: function (newPack) {
+            tubes = tubes.sort();
+            var some = packs.map(x => x.bundles).some(y => equals(y, newPack.bundles));
+            if (!some)
+                packs.push(newPack);
+        },
+
+        combineInBundles: function (prev) {
+            for (var i = 0; i < this.tubes.length; i++) {
+
+                if (prev.tubes.includes(this.tubes[i]))
+                    continue;
+
+                var bundle = {};
+                bundle.tubes = prev.tubes.concat([this.tubes[i]]);
+                bundle.used = bundle.tubes.map(x => Number(x.length).toFixed(2)).reduce((a, b) => a + b);
+
+                if (bundle.used > 200)
+                    return;
+
+                bundle.stump = Number(this.bundle - bundle.used).toFixed(2);
+                bundle.id = bundle.tubes.map(t => t.id).sort().join('');
+
+                if (!this.bundles.map(b => b.id).some(b => b.id == bundle.id))
+                    this.bundles.push(bundle);
+
+                this.combineInBundles(bundle);
+            }
+        },
+
+        equals: function (a, b) {
+            if (a.length !== b.length) return false;
+            return intersect(a, b).length === b.length;
+        },
+
+        intersect: function (a, b) {
+            var t;
+            if (b.length > a.length) t = b, b = a, a = t;
+            return a.filter((e) => b.indexOf(e) > -1);
         }
-    }
-
-    function equals(a, b) {
-        if (a.length !== b.length) return false;
-        return intersect(a, b).length === b.length;
-    }
-
-    function intersect(a, b) {
-        var t;
-        if (b.length > a.length) t = b, b = a, a = t;
-        return a.filter((e) => b.indexOf(e) > -1);
-    }
+    };
 </script>
 
 </html>
