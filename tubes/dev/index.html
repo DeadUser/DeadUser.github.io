@@ -18,7 +18,7 @@
     }
 </style>
 
-<body class="text-light" onload="restart()" style="background-color: #002">
+<body class="text-light" onload="tubeCalculator()" style="background-color: #002">
     <div class="container">
         <div class="row w-100">
             <div class="col-md-6 order-md-1">
@@ -30,17 +30,17 @@
                         Посчитать
                     </button>
                     <button id='btn_clear' type="button" class="btn btn-light float-left mr-2" style="width:30%"
-                        onclick="restart()">
+                        onclick="tubeCalculator()">
                         Отчистить
                     </button>
-                    <button id='btn_generate' type="button" class="btn btn-light float-right" style="width:30%"
+                    <button id='btn_test' type="button" class="btn btn-light float-right" style="width:30%"
                         onclick="addInputs()">
                         Тест
                     </button>
                 </div>
 
                 <div class="progress ml-2 w-100">
-                    <div id="bar_progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"
+                    <div id="progressbar" class="progress-bar bg-success" role="progressbar" style="width: 0%"
                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
 
@@ -50,7 +50,7 @@
                     </div>
                     <input type="number" class="form-control" min="0" max="200" placeholder="Длина" id="tube_length">
                     <input type="text" class="form-control rounded-right" placeholder="Коментарий" id="tube_desc">
-                    <button id='btn_add_tube' type="button" class="btn btn-light float-left ml-2"
+                    <button id='btn_add' type="button" class="btn btn-light float-left ml-2"
                         onclick="addTube()">+</button>
                 </div>
 
@@ -74,19 +74,19 @@
 </body>
 
 <script>
-    function restart() {
-        // ui elements
-        uiInputs = document.getElementById('inputs');
-        itIsTest = document.getElementById('need_to_test');
-        uiTubesAmount = document.getElementById('txt_amount');
-        uiProgress = document.getElementById('bar_progress');
-        uiResult = document.getElementById('result');
-        uiBtnGenerate = document.getElementById('btn_generate');
-        uiBtnClear = document.getElementById('btn_clear');
-        uiBtnCalculate = document.getElementById('btn_calculate');
-        // start functions
-        clear();
-        sp(0, 100);
+    function tubeCalculator() {
+        btnAdd = document.getElementById('btn_add');
+        btnClear = document.getElementById('btn_clear');
+        btnTest = document.getElementById('btn_test');
+        btnCalc = document.getElementById('btn_calculate');
+
+        progressbar = document.getElementById('progressbar');
+
+        text1 = document.getElementById('tube_length');
+        text2 = document.getElementById('tube_desc');
+
+
+
         // data
         current = Number();
         tubes = Array();
@@ -96,6 +96,8 @@
         // consts
         bundleLength = Number(200);
         maxTubes = Number(20);
+
+        sp(0, 100);
     }
 
     function clear() {
