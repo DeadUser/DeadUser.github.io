@@ -157,7 +157,7 @@
         drawTubes: function () {
             tuber.data.innerHTML = String();
             for (var i = tuber.tubes.length - 1; i >= 0; i--)
-                tuber.data.innerHTML += `<tr><td>${tuber.tubes[i].id}</td><td>${Number(tuber.tubes[i].length)}</td><td>${tuber.tubes[i].description}</td>
+                tuber.data.innerHTML += `<tr><td>${Number(tuber.tubes[i].length)}</td><td>${tuber.tubes[i].description}</td>
                 <td><button onclick="tuber.deleteTube('${tuber.tubes[i].id}')"></td></tr>`;
         },
 
@@ -193,7 +193,7 @@
                 var tube = {
                     id: tuber.numberToSymbol(tuber.tubes.length),
                     length: Number((Math.random() * 30) + 30).toFixed(2),
-                    description: String('Тестовый шланг')
+                    description: String(`Тестовый шланг ${tuber.tubes.length}`)
                 };
                 if (tube.length <= 0 || tube.length > tuber.bundle) return;
                 tuber.tubes.push(tube);
@@ -209,7 +209,6 @@
 
             result.innerHTML =
                 `<thead><tr>
-                <th scope="col">Бобина</th>
                 <th scope="col">Длина</th>
                 <th scope="col">Примечание</th>
                 </tr></thead><tbody>`;
@@ -217,15 +216,15 @@
             for (var p = 0; p < tuber.packs.length; p++) {
                 var pack = tuber.packs[p];
 
-                result.innerHTML += `<tr><th><br><br>ВАРИАНТ ${p+1}</th></tr>`
+                result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p+1}</th></tr>`
                 for (var b = 0; b < pack.bundles.length; b++) {
                     var bundle = pack.bundles[b];
                     result.innerHTML +=
-                        `<tr><th>Бобина: ${b+1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
+                        `<tr><th></th><th>Бобина: ${b+1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
                     for (var t = 0; t < bundle.tubes.length; t++) {
                         var tube = bundle.tubes[t];
                         result.innerHTML +=
-                            `<tr><td>${b+1}: шланг: ${tube.id}</td><td>${tube.length}</td><td>${tube.description}</td></tr>`;
+                            `<tr><td>${tube.length}</td><td>${tube.description}</td></tr>`;
                     }
                 }
 
