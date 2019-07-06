@@ -167,14 +167,17 @@
             tuber.sp(0);
         },
 
-        clear: function () {
-            tuber.tubes = [];
+        clear: function (tubes = true) {
+            if (tubes)
+                tuber.tubes = [];
             tuber.bundles = [];
             tuber.packs = [];
             tuber.drawTubes();
             tuber.drawResults();
             tuber.sp(0);
         },
+
+
 
         numberToSymbol: function (num) {
             return 'abcdefghijklmnopqrstuvwxyz' [num];
@@ -225,12 +228,14 @@
                             `<tr><td>${b+1}: шланг: ${tube.id}</td><td>${tube.length}</td><td>${tube.description}</td></tr>`;
                     }
                 }
-                
+
             }
             result.innerHTML += `</tbody>`;
         },
 
         calculate: function () {
+            tuber.clear(false);
+
             tuber.tubes = tuber.tubes.sort((a, b) => a.length - b.length);
             tuber.sp(1);
 
