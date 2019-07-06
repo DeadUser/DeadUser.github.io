@@ -72,7 +72,7 @@
                     </button>
                     <button id='btn_clear' type="button" class="btn btn-light float-right" style="width:49%"
                         onclick="tuber.clear()">
-                        Отчистить
+                        Очистить
                     </button>
                 </div>
 
@@ -86,7 +86,7 @@
                         <span class="input-group-text" id="tube_id">Id</span>
                     </div>
                     <input type="number" class="form-control" min="0" max="200" placeholder="Длина" id="tube_length">
-                    <input type="text" class="form-control rounded-right" maxlength="25" placeholder="Коментарий"
+                    <input type="text" class="form-control rounded-right" maxlength="25" placeholder="Комментарий"
                         id="tube_desc">
                     <button id='btn_add' type="button" class="btn btn-light float-left ml-2" onclick="tuber.addTube()"
                         title="Максимум шлангов: 20">
@@ -170,7 +170,7 @@
         clear: function () {
             tuber.tubes = [];
             tuber.bundles = [];
-            tuber.pucks = [];
+            tuber.packs = [];
             tuber.drawTubes();
             tuber.drawResults();
             tuber.sp(0);
@@ -186,7 +186,7 @@
 
         test: function () {
             tuber.clear();
-            for (var i = 0; i < 7; i++) {
+            for (var i = 0; i < 15; i++) {
                 var tube = {
                     id: tuber.numberToSymbol(tuber.tubes.length),
                     length: Number((Math.random() * 30) + 30).toFixed(2),
@@ -216,14 +216,14 @@
                 for (var b = 0; b < pack.bundles.length; b++) {
                     var bundle = pack.bundles[b];
                     result.innerHTML +=
-                        `<tr><th>Бобина: ${b+1}; Использовано: ${bundle.used}; Остаток: ${bundle.stamp};</th></th>`;
+                        `<tr><th>Бобина: ${b+1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
                     for (var t = 0; t < bundle.tubes.length; t++) {
                         var tube = bundle.tubes[t];
                         result.innerHTML +=
-                            `<tr><td>${b+1}</td><td>${tube.id}</td><td>${tube.description}</td></tr>`;
+                            `<tr><td>${b+1}</td><td>${tube.length}</td><td>${tube.description}</td></tr>`;
                     }
                 }
-                result.innerHTML += `<tr><br></tr>`
+                result.innerHTML += `<tr><div class="w-100" style="height: 10px; background-color:#faa"><diw></tr>`
             }
             result.innerHTML += `</tbody>`;
         },
@@ -275,16 +275,18 @@
                 if (tuber.packs.length > 1000) return;
 
                 if (this.bundlesContainTubes(prev.bundles, tuber.bundles[i].tubes))
-                    return;
+                    continue;
 
                 var pack = {}
                 pack.bundles = prev.bundles.concat([tuber.bundles[i]]);
                 pack.id = pack.bundles.map(b => b.id).sort().join();
                 pack.stump = Math.max(pack.bundles.map(b => b.stump));
 
-                if (tuber.packContainAllTube(pack.bundles))
+                if (tuber.packContainAllTube(pack.bundles)) {
                     if (!tuber.packs.some(p => p.id == pack.id))
                         tuber.addPack(pack);
+                    return;
+                }
 
                 tuber.combinePacks(pack);
             }
@@ -316,12 +318,12 @@
 
         addBundle: function (bundle) {
             tuber.bundles.push(bundle);
-            console.log('bundles ' + tuber.bundles.length);
+            console.log(`bundles ${tuber.bundles.length} bundle ${bundle.id}`);
         },
 
         addPack: function (pack) {
             tuber.packs.push(pack);
-            console.log('pucks ' + tuber.packs.length);
+            console.log(`packs ${tuber.packs.length} pack ${pack.id}`);
         },
     };
 </script>
