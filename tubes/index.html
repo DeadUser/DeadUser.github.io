@@ -213,6 +213,8 @@
 
             for (var p = 0; p < tuber.packs.length; p++) {
                 var pack = tuber.packs[p];
+
+                result.innerHTML += `<tr><th><br><br>ВАРИАНТ ${p+1}</th></tr>`
                 for (var b = 0; b < pack.bundles.length; b++) {
                     var bundle = pack.bundles[b];
                     result.innerHTML +=
@@ -223,7 +225,7 @@
                             `<tr><td>${b+1}: шланг: ${tube.id}</td><td>${tube.length}</td><td>${tube.description}</td></tr>`;
                     }
                 }
-                result.innerHTML += `<tr><div class="w-100" style="height: 10px; background-color:#faa"><diw></tr>`
+                
             }
             result.innerHTML += `</tbody>`;
         },
