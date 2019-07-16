@@ -51,21 +51,21 @@
     }
 
     footer {
-        position: fixed;
         height: 40px;
         bottom: 0;
         width: 100%;
         background-color: black;
+        position: fixed;
     }
 </style>
 
-<body class="text-light" onload="tuber.clear()" style="background-color: #4d4861">
+<body class="text-light flex" onload="tuber.clear()" style="background-color: #4d4861">
     <div class="container">
         <div class="row w-100">
             <div class="col-md-6 order-md-1" style="min-width: 400px;">
                 <h1 class="m-2">Калькулятор</h1>
 
-                <div class="m-2 w-100" style="height:37px">
+                <div class="m-2 w-100 mb-4" style="height:37px">
                     <button id='btn_calculate' type="button" class="btn btn-light float-left" style="width:49%"
                         onclick="tuber.calculate()">
                         Посчитать
@@ -76,17 +76,32 @@
                     </button>
                 </div>
 
-                <div class="progress m-2 w-100">
-                    <div id="progressbar" class="progress-bar bg-success" role="progressbar" style="width: 0%;"
-                        aria-valuemin="0" aria-valuemax="100"> </div>
+                <div id="message" class="m-2" style="height: 20px"> </div>
+
+                <div class="input-group input-group-sm m-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Длина бобины</span>
+                    </div>
+                    <input type="number" class="form-control" min="1" placeholder="Длина" id="bundle_length"
+                        onkeypress="tuber.calculateComplexity()" onmouseup="tuber.calculateComplexity()" value="200">
+                </div>
+                <div class="input-group input-group-sm m-2" title="чем больше число тем лучше результат">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Выбрать из</span>
+                    </div>
+                    <input type="number" class="form-control" min="1" placeholder="Количество вариантов" id="complexity"
+                        value="10000" onkeypress="tuber.calculateComplexity()" onmouseup="tuber.calculateComplexity()">
+                    <div class="input-group-append">
+                        <span class="input-group-text">комбинаций</span>
+                    </div>
                 </div>
 
                 <div class="input-group m-2">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="tube_id">Шланг</span>
                     </div>
-                    <input type="number" class="form-control" min="0" max="200" placeholder="Длина" id="tube_length">
-                    <input type="text" class="form-control rounded-right" maxlength="25" placeholder="Описание"
+                    <input type="number" class="form-control" min="0" placeholder="Длина" id="tube_length">
+                    <input type="text" class="form-control rounded-right" maxlength="30" placeholder="Описание"
                         id="tube_desc">
                     <button id='btn_add' type="button" class="btn btn-light float-left ml-2" onclick="tuber.addTube()"
                         title="Максимум шлангов: 20">
@@ -107,13 +122,11 @@
                 </table>
             </div>
         </div>
+
     </div>
 
     <footer class="footer">
-        <button id='btn_test' type="button" class="btn float-left m-2" onclick="tuber.test()">Тест</button>
-        <div class="float-left m-2">
-            <h6><small>максимум шлангов: 20; длина бобины: 200;</small></h6>
-        </div>
+        <button id='btn_test' type="button" class="btn btn-sm float-left" onclick="tuber.test()">Тест</button>
         <div class="footer-copyright m-2 float-right">© 2019 Copyright:
             <a href="mailto:egor.domozhirov@gmail.com"> egor.domozhirov@gmail.com</a>
         </div>
@@ -128,21 +141,41 @@
         btnClear: document.getElementById('btn_clear'),
         btnTest: document.getElementById('btn_test'),
         btnCalc: document.getElementById('btn_calculate'),
-        progressbar: document.getElementById('progressbar'),
         text1: document.getElementById('tube_length'),
         text2: document.getElementById('tube_desc'),
         data: document.getElementById('tubes'),
         result: document.getElementById('result'),
-
-        bundle: Number(200),
-        maximum: Number(20),
+        message: document.getElementById('message'),
+        bundle: document.getElementById('bundle_length'),
+        complexity: document.getElementById('complexity'),
 
         tubes: Array(),
         bundles: Array(),
         packs: Array(),
 
+        calculateComplexity: function () {
+            var tubes = Number(tuber.tubes.length);
+            if (!tubes) return;
+
+            var packs = Number(tuber.complexity.value);
+            var bundle = Number(tuber.bundle.value);
+
+            var sumTubes = tuber.tubes.map(b => Number(b.length)).reduce((a, b) => a + b);
+            var avgTube = sumTubes / tubes;
+            var bundles = sumTubes / bundle;
+
+            var tubesInBundle = bundle / avgTube;
+            var howBundlesNeeded = tubes / tubesInBundle;
+
+            for (var i = 0, b = 0; i < tubes; i++) b = b + (tubes * i);
+
+            var first = b * 1.3;
+            var res = packs * first.toFixed() / 10000;
+
+            message.innerHTML = `Сложность: ${res.toFixed()}`;
+        },
+
         addTube: function () {
-            if (tuber.tubes.length > tuber.maximum) tuber.btnAdd.disabled = true;
             var tube = {
                 id: tuber.numberToSymbol(tuber.tubes.length),
                 length: Number(tuber.text1.value).toFixed(2),
@@ -150,8 +183,8 @@
             };
             if (tube.length <= 0 || tube.length > tuber.bundle) return;
             tuber.tubes.push(tube);
+            tuber.calculateComplexity();
             tuber.drawTubes();
-            tuber.sp(0);
         },
 
         drawTubes: function () {
@@ -164,27 +197,22 @@
         deleteTube: function (id) {
             tuber.tubes = tuber.tubes.filter((e) => e.id != id);
             tuber.drawTubes();
-            tuber.sp(0);
         },
 
         clear: function (tubes = true) {
-            if (tubes)
+            if (tubes) {
+                tuber.text1.value = String();
+                tuber.text2.value = String();
                 tuber.tubes = [];
+            }
             tuber.bundles = [];
             tuber.packs = [];
             tuber.drawTubes();
             tuber.drawResults();
-            tuber.sp(0);
         },
-
-
 
         numberToSymbol: function (num) {
-            return 'abcdefghijklmnopqrstuvwxyz' [num];
-        },
-
-        sp: function (percent) {
-            tuber.progressbar.style.width = String(Number(percent.toFixed())) + '%';
+            return 'abcdefghijklmnopqrstuvwxyz'[num];
         },
 
         test: function () {
@@ -216,11 +244,11 @@
             for (var p = 0; p < tuber.packs.length; p++) {
                 var pack = tuber.packs[p];
 
-                result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p+1}</th></tr>`
+                result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p + 1}</th></tr>`
                 for (var b = 0; b < pack.bundles.length; b++) {
                     var bundle = pack.bundles[b];
                     result.innerHTML +=
-                        `<tr><th></th><th>Бобина: ${b+1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
+                        `<tr><th></th><th>Бобина: ${b + 1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
                     for (var t = 0; t < bundle.tubes.length; t++) {
                         var tube = bundle.tubes[t];
                         result.innerHTML +=
@@ -233,10 +261,11 @@
         },
 
         calculate: function () {
+            tuber.calculateComplexity();
+
             tuber.clear(false);
 
             tuber.tubes = tuber.tubes.sort((a, b) => a.length - b.length);
-            tuber.sp(1);
 
             tuber.combineInBundles({
                 tubes: Array()
@@ -248,15 +277,11 @@
                 bundles: []
             });
 
-            tuber.sp(95);
-
             tuber.packs.sort((a, b) => a.bundles.length - b.bundles.length);
             tuber.packs = tuber.packs.filter(e => tuber.packs[0].bundles.length == e.bundles.length);
             tuber.packs = tuber.packs.slice(0, 5)
 
             tuber.drawResults()
-
-            tuber.sp(100)
         },
 
         bundlesContainTubes: function (bundles, tubes) {
@@ -278,7 +303,7 @@
         combinePacks: function (prev) {
             for (var i = 0; i < tuber.bundles.length; i++) {
 
-                if (tuber.packs.length > 1000) return;
+                if (tuber.packs.length > tuber.complexity.value) return;
 
                 if (this.bundlesContainTubes(prev.bundles, tuber.bundles[i].tubes))
                     continue;
@@ -309,10 +334,10 @@
                 bundle.tubes = prev.tubes.concat([tuber.tubes[i]]);
                 bundle.used = bundle.tubes.map(x => Number(x.length)).reduce((a, b) => a + b);
 
-                if (bundle.used > 200)
+                if (bundle.used > tuber.bundle.value)
                     return;
 
-                bundle.stump = Number(tuber.bundle - bundle.used).toFixed(2);
+                bundle.stump = Number(tuber.bundle.value - bundle.used).toFixed(2);
                 bundle.id = bundle.tubes.map(t => t.id).sort().join('');
 
                 if (!tuber.bundles.some(b => b.id == bundle.id))
