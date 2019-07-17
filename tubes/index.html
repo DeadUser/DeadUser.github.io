@@ -66,12 +66,12 @@
                 <h1 class="m-2">Калькулятор</h1>
 
                 <div class="m-2 w-100 mb-4" style="height:37px">
-                    <button id='btn_calculate' type="button" class="btn btn-light float-left" style="width:49%"
-                        onclick="tuber.calculate()">
+                    <button id='btn_calculate' type="button" class="btn btn-light float-left"
+                        style="width:49%" onclick="tuber.calculate()">
                         Посчитать
                     </button>
-                    <button id='btn_clear' type="button" class="btn btn-light float-right" style="width:49%"
-                        onclick="tuber.clear()">
+                    <button id='btn_clear' type="button" class="btn btn-light float-right"
+                        style="width:49%" onclick="tuber.clear()">
                         Очистить
                     </button>
                 </div>
@@ -82,15 +82,17 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Длина бобины</span>
                     </div>
-                    <input type="number" class="form-control" min="1" placeholder="Длина" id="bundle_length"
-                        onkeypress="tuber.calculateComplexity()" onmouseup="tuber.calculateComplexity()" value="200">
+                    <input type="number" class="form-control" min="1" placeholder="Длина"
+                        id="bundle_length" onkeypress="tuber.calculateComplexity()"
+                        onmouseup="tuber.calculateComplexity()" value="200">
                 </div>
                 <div class="input-group input-group-sm m-2" title="чем больше число тем лучше результат">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Выбрать из</span>
                     </div>
-                    <input type="number" class="form-control" min="1" placeholder="Количество вариантов" id="complexity"
-                        value="10000" onkeypress="tuber.calculateComplexity()" onmouseup="tuber.calculateComplexity()">
+                    <input type="number" class="form-control" min="1" placeholder="Количество вариантов"
+                        id="complexity" value="10000" onkeypress="tuber.calculateComplexity()"
+                        onmouseup="tuber.calculateComplexity()">
                     <div class="input-group-append">
                         <span class="input-group-text">комбинаций</span>
                     </div>
@@ -101,10 +103,10 @@
                         <span class="input-group-text" id="tube_id">Шланг</span>
                     </div>
                     <input type="number" class="form-control" min="0" placeholder="Длина" id="tube_length">
-                    <input type="text" class="form-control rounded-right" maxlength="30" placeholder="Описание"
-                        id="tube_desc">
-                    <button id='btn_add' type="button" class="btn btn-light float-left ml-2" onclick="tuber.addTube()"
-                        title="Максимум шлангов: 20">
+                    <input type="text" class="form-control rounded-right" maxlength="30"
+                        placeholder="Описание" id="tube_desc">
+                    <button id='btn_add' type="button" class="btn btn-light float-left ml-2"
+                        onclick="tuber.addTube()" title="Максимум шлангов: 20">
                         <div class="icon icon-plus">
                             <span class="name"></span>
                         </div>
@@ -126,7 +128,8 @@
     </div>
 
     <footer class="footer">
-        <button id='btn_test' type="button" class="btn btn-sm float-left" onclick="tuber.test()">Тест</button>
+        <button id='btn_test' type="button" class="btn btn-sm float-left"
+            onclick="tuber.test()">Тест</button>
         <div class="footer-copyright m-2 float-right">© 2019 Copyright:
             <a href="mailto:egor.domozhirov@gmail.com"> egor.domozhirov@gmail.com</a>
         </div>
@@ -135,6 +138,12 @@
 
 <script>
     'use strict';
+    var all = document.getElementsByTagName("*");
+
+    for (var i = 0, max = all.length; i < max; i++) {
+        all[i].tabIndex = '-1';
+    }
+
 
     var tuber = {
         btnAdd: document.getElementById('btn_add'),
@@ -191,7 +200,7 @@
             tuber.data.innerHTML = String();
             for (var i = tuber.tubes.length - 1; i >= 0; i--)
                 tuber.data.innerHTML += `<tr><td>${Number(tuber.tubes[i].length)}</td><td>${tuber.tubes[i].description}</td>
-                <td><button onclick="tuber.deleteTube('${tuber.tubes[i].id}')"></td></tr>`;
+                <td><button tabindex="-1" onclick="tuber.deleteTube('${tuber.tubes[i].id}')"></td></tr>`;
         },
 
         deleteTube: function (id) {
@@ -357,6 +366,11 @@
             console.log(`packs ${tuber.packs.length} pack ${pack.id}`);
         },
     };
+
+    tuber.text1.tabIndex = '1';
+    tuber.text2.tabIndex = '2';
+    tuber.btnAdd.tabIndex = '3';
+    tuber.btnCalc.tabIndex = '4';
 </script>
 
 </html>
