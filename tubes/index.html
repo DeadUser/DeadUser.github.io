@@ -340,7 +340,7 @@
         data.innerHTML = String();
         for (var i = tubes.length - 1; i >= 0; i--)
             data.innerHTML += `<tr><td>${Number(tubes[i].length)}</td><td>${tubes[i].description}</td>
-                <td><button tabindex='-1' onclick='deleteTube('${tubes[i].id}')'></td></tr>`;
+                <td><button tabindex='-1' onclick='deleteTube("${tubes[i].id}")'></td></tr>`;
     };
 
     function deleteTube(id) {
