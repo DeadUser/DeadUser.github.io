@@ -66,10 +66,14 @@
     }
 
     #message {
-        height: 40px;
+        height: 50px;
+        text-align: center;
+        padding: 20px;
+        color: #faa;
     }
 
-    #btn_calculate,
+    #btn_start,
+    #btn_stop,
     #btn_clear {
         width: 32%;
     }
@@ -82,27 +86,18 @@
                 <h1 class='m-2'>Калькулятор</h1>
 
                 <div class='m-2 w-100 mb-4' style='height:7px'>
-                    <button type='button' id='btn_calculate' class='btn btn-light float-left' onclick='startWorker()'>Посчитать</button>
-                    <button type='button' id='btn_calculate' class='btn btn-light float-left ml-2' onclick='stopWorker()'>Остоновить</button>
-                    <button type='button' id='btn_clear' class='btn btn-light float-right' onclick='clear()'>Очистить</button>
+                    <button type='button' id='btn_start' class='btn btn-light float-left' onclick='startWorker()'>Посчитать</button>
+                    <button type='button' id='btn_stop' disabled class='btn btn-light float-left ml-2' onclick='stopWorker()'>Выбрать</button>
+                    <button type='button' id='btn_clear' disabled class='btn btn-light float-right' onclick='clearAll()'>Очистить</button>
                 </div>
 
                 <div id='message' class='m-2'> </div>
 
                 <div class='input-group input-group-sm m-2'>
                     <div class='input-group-prepend'>
-                        <span class='input-group-text'>Длина бобины</span>
+                        <span class='input-group-text'>Длина бухты</span>
                     </div>
                     <input type='number' class='form-control' min='1' placeholder='Длина' id='bundle_length' value='200'>
-                </div>
-                <div class='input-group input-group-sm m-2' title='чем больше число тем лучше результат'>
-                    <div class='input-group-prepend'>
-                        <span class='input-group-text'>Выбрать из</span>
-                    </div>
-                    <input type='number' class='form-control' min='1' placeholder='Количество вариантов' id='complexity' value='10000'>
-                    <div class='input-group-append'>
-                        <span class='input-group-text'>комбинаций</span>
-                    </div>
                 </div>
 
                 <div class='input-group m-2'>
@@ -187,16 +182,20 @@
 
             if (stopper) return;
 
+
             if (bundlesContainTubes(prev.bundles, bundles[i].tubes)) continue;
 
             var pack = {}
             pack.bundles = prev.bundles.concat([bundles[i]]);
             pack.id = pack.bundles.map(b => b.id).sort().join();
+
             pack.stump = Math.max(pack.bundles.map(b => b.stump));
 
             if (packContainAllTube(pack.bundles)) {
                 if (!packs.some(p => p.id == pack.id))
                     addPack(pack);
+                if (packs.length % 100 == 0)
+                    self.postMessage({ title: 'packs', packs: packs });
                 return;
             }
 
@@ -216,7 +215,7 @@
 
             if (bundle.used > bundleLength) return;
 
-            bundle.stump = Number(bundle.value - bundle.used).toFixed(2);
+            bundle.stump = Number(bundleLength - bundle.used).toFixed(2);
             bundle.id = bundle.tubes.map(t => t.id).sort().join('');
 
             if (!bundles.some(b => b.id == bundle.id))
@@ -233,7 +232,6 @@
 
     function addPack(pack) {
         packs.push(pack);
-        self.postMessage({ title: 'result', packs: packs });
         console.log(`packs ${packs.length} pack ${pack.id}`);
     };
 
@@ -249,21 +247,21 @@
     var btnAdd = document.getElementById('btn_add');
     var btnClear = document.getElementById('btn_clear');
     var btnTest = document.getElementById('btn_test');
-    var btnCalc = document.getElementById('btn_calculate');
+    var btnStart = document.getElementById('btn_start');
+    var btnStop = document.getElementById('btn_stop');
     var text1 = document.getElementById('tube_length');
     var text2 = document.getElementById('tube_desc');
     var data = document.getElementById('tubes');
     var result = document.getElementById('result');
     var message = document.getElementById('message');
     var bundle = document.getElementById('bundle_length');
-    var complexity = document.getElementById('complexity');
 
     /*preparing UI*/
     Array.from(all).forEach(e => e.tabIndex = '-1')
     text1.tabIndex = '1';
     text2.tabIndex = '2';
     btnAdd.tabIndex = '3';
-    btnCalc.tabIndex = '4';
+    btnStart.tabIndex = '4';
 
     /*preparing worker*/
     var worker = null;
@@ -284,18 +282,30 @@
         worker.terminate();
         worker = undefined;
 
-        message.innerHTML = packs.length;
-
         packs.sort((a, b) => a.bundles.length - b.bundles.length);
-        packs = packs.filter(e => packs[0].bundles.length == e.bundles.length);
-        packs = packs.slice(0, 5)
+        packs = [packs[0]];
+        drawResults();
 
-        drawResults()
+        text1.disabled = false;
+        text2.disabled = false;
+        btnAdd.disabled = false;
+        btnStart.disabled = false;
+        bundle.disabled = false;
+        btnClear.disabled = false;
+        btnStop.disabled = true;
     }
 
     function startWorker() {
-        clear(false);
+        text1.disabled = true;
+        text2.disabled = true;
+        btnAdd.disabled = true;
+        btnStart.disabled = true;
+        bundle.disabled = true;
 
+        btnStop.disabled = false;
+
+        clear(false);
+        text1.enabled = false;
         worker = new Worker(window.URL.createObjectURL(blob));
         worker.onmessage = message => handle(message);
         worker.postMessage({ msg: 'calculate', tubes: tubes, bundle: bundle.value });
@@ -303,8 +313,7 @@
 
     function handle(message) {
         packs = message.data.packs;
-        if (packs.length % 1000 == 0)
-            message.innerHTML = packs.length;
+        document.getElementById("message").innerHTML = `Рассмотренно ${packs.length} вариантов`;
     }
 
     function addTube() {
@@ -331,14 +340,22 @@
         drawTubes();
     };
 
-    function clear(tubes = true) {
-        if (tubes) {
-            text1.value = String();
-            text2.value = String();
-            tubes = [];
-        }
+    function clear(all = true) {
+        if (all) clearAll();
         bundles = [];
         packs = [];
+        drawTubes();
+        drawResults();
+    };
+
+    function clearAll() {
+        message.innerHTML = String();
+        text1.value = String();
+        text2.value = String();
+        tubes = [];
+        bundles = [];
+        packs = [];
+
         drawTubes();
         drawResults();
     };
@@ -376,11 +393,11 @@
         for (var p = 0; p < packs.length; p++) {
             var pack = packs[p];
 
-            result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p + 1}</th></tr>`
+            //result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p + 1}</th></tr>`
             for (var b = 0; b < pack.bundles.length; b++) {
                 var bundle = pack.bundles[b];
                 result.innerHTML +=
-                    `<tr><th></th><th>Бобина =  ${b + 1}; Использовано =  ${Number(Number(bundle.used.toFixed(2)))}; Остаток =  ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
+                    `<tr><th></th><th>Бухта =  ${b + 1}; Использовано =  ${Number(Number(bundle.used.toFixed(2)))}; Остаток =  ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
                 for (var t = 0; t < bundle.tubes.length; t++) {
                     var tube = bundle.tubes[t];
                     result.innerHTML +=
@@ -390,6 +407,7 @@
 
         }
         result.innerHTML += `</tbody>`;
+        result.innerHTML += `<div style="height: 100px;"></div>`;
     };
 
 </script>
