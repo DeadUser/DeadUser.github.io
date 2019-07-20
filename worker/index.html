@@ -2,11 +2,9 @@
 <html>
 
 <body>
-
 	<p>Count numbers: <output id="result"></output></p>
 	<button onclick="startWorker()">Start Worker</button>
 	<button onclick="stopWorker()">Stop Worker</button>
-
 </body>
 
 <script id="worker1">
@@ -22,18 +20,12 @@
 <script>
 	var w;
 
-	var blob = new Blob([
-		document.querySelector('#worker1').textContent
-	], { type: "text/javascript" })
+	var blob = new Blob([document.querySelector('#worker1').textContent], { type: "text/javascript" })
 
 	function startWorker() {
 		if (typeof (Worker) !== "undefined") {
-			if (typeof (w) == "undefined") {
-				w = new Worker(window.URL.createObjectURL(blob));
-			}
-			w.onmessage = function (event) {
-				document.getElementById("result").innerHTML = event.data;
-			};
+			if (typeof (w) == "undefined") w = new Worker(window.URL.createObjectURL(blob));
+			w.onmessage = event => document.getElementById("result").innerHTML = event.data;
 		} else {
 			document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
 		}

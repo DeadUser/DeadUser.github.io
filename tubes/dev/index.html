@@ -58,7 +58,7 @@
     }
 
     body {
-        background-color: #4d4861;
+        background-color: #556;
     }
 
     .text {
@@ -69,13 +69,14 @@
         height: 50px;
         text-align: center;
         padding: 20px;
-        color: #faa;
+        color: #add;
     }
 
+    #btn_print,
     #btn_start,
     #btn_stop,
     #btn_clear {
-        width: 32%;
+        width: 49%;
     }
 </style>
 
@@ -85,10 +86,14 @@
             <div class='col-md-6 order-md-1' style='min-width:400px;'>
                 <h1 class='m-2'>Калькулятор</h1>
 
-                <div class='m-2 w-100 mb-4' style='height:7px'>
+                <div class='m-2 w-100 m-2' style='height: 40px'>
                     <button type='button' id='btn_start' class='btn btn-light float-left' onclick='startWorker()'>Посчитать</button>
-                    <button type='button' id='btn_stop' disabled class='btn btn-light float-left ml-2' onclick='stopWorker()'>Выбрать</button>
                     <button type='button' id='btn_clear' disabled class='btn btn-light float-right' onclick='clearAll()'>Очистить</button>
+                </div>
+
+                <div class='m-2 w-100 m-2' style='height: 40px'>
+                    <button type='button' id='btn_stop' disabled class='btn btn-light float-left' onclick='stopWorker()'>Показать</button>
+                    <button type='button' id='btn_print' disabled class='btn btn-light float-right' onclick='printData()'>Распечатать</button>
                 </div>
 
                 <div id='message' class='m-2'> </div>
@@ -118,15 +123,16 @@
                 </table>
             </div>
 
-            <div class='col-md-6 order-md-2'>
+            <div class='col-md-6 order-md-2' id='result_for_print'>
                 <table id='result' class='table m-2 w-100 small text'> </table>
             </div>
+            <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
         </div>
 
     </div>
 
     <footer class='footer'>
-        <button id='btn_test' type='button' class='btn btn-sm float-left' onclick='test()'>Тест</button>
+        <button id='btn_test' type='button' class='btn btn-sm float-left' disabled onclick='test()'>Тест</button>
         <div class='footer-copyright m-2 float-right'>© 2019 Copyright:
             <a href='mailto = egor.domozhirov@gmail.com'> egor.domozhirov@gmail.com</a>
         </div>
@@ -203,7 +209,6 @@
         }
     };
 
-
     function combineInBundles(prev) {
         for (var i = 0; i < this.tubes.length; i++) {
 
@@ -234,8 +239,6 @@
         packs.push(pack);
         console.log(`packs ${packs.length} pack ${pack.id}`);
     };
-
-
 </script>
 
 <script id='ui'>
@@ -246,6 +249,7 @@
     var all = document.getElementsByTagName('*');
     var btnAdd = document.getElementById('btn_add');
     var btnClear = document.getElementById('btn_clear');
+    var btnPrint = document.getElementById('btn_print');
     var btnTest = document.getElementById('btn_test');
     var btnStart = document.getElementById('btn_start');
     var btnStop = document.getElementById('btn_stop');
@@ -290,6 +294,7 @@
         text2.disabled = false;
         btnAdd.disabled = false;
         btnStart.disabled = false;
+        btnPrint.disabled = false;
         bundle.disabled = false;
         btnClear.disabled = false;
         btnStop.disabled = true;
@@ -299,9 +304,10 @@
         text1.disabled = true;
         text2.disabled = true;
         btnAdd.disabled = true;
+        btnPrint.disabled = true;
         btnStart.disabled = true;
         bundle.disabled = true;
-
+        btnClear.disabled = true;
         btnStop.disabled = false;
 
         clear(false);
@@ -314,6 +320,8 @@
     function handle(message) {
         packs = message.data.packs;
         document.getElementById("message").innerHTML = `Рассмотренно ${packs.length} вариантов`;
+        if (message.data.title == 'result')
+            stopWorker();
     }
 
     function addTube() {
@@ -381,7 +389,7 @@
 
     function drawResults() {
         result.innerHTML = String();
-        if (!packs.length)
+        if (!packs.length || !packs[0])
             return;
 
         result.innerHTML =
@@ -397,7 +405,7 @@
             for (var b = 0; b < pack.bundles.length; b++) {
                 var bundle = pack.bundles[b];
                 result.innerHTML +=
-                    `<tr><th></th><th>Бухта =  ${b + 1}; Использовано =  ${Number(Number(bundle.used.toFixed(2)))}; Остаток =  ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
+                    `<tr><th></th><th>Бухта: ${b + 1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
                 for (var t = 0; t < bundle.tubes.length; t++) {
                     var tube = bundle.tubes[t];
                     result.innerHTML +=
@@ -409,6 +417,14 @@
         result.innerHTML += `</tbody>`;
         result.innerHTML += `<div style="height: 100px;"></div>`;
     };
+
+    function printData() {
+        window.frames["print_frame"].document.body.innerHTML = String();
+        window.frames["print_frame"].document.body.innerHTML += `<style type='text/css'>table { border-collapse: collapse; width: 100%; } table, th, td { border: 1px solid black; }</style>`
+        window.frames["print_frame"].document.body.innerHTML += document.getElementById("result_for_print").innerHTML;
+        window.frames["print_frame"].window.focus();
+        window.frames["print_frame"].window.print();
+    }
 
 </script>
 
