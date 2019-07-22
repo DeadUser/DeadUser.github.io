@@ -287,10 +287,12 @@
         worker.terminate();
         worker = undefined;
 
-        packs.sort((a, b) => a.bundles.length - b.bundles.length);
-        packs = [packs[0]];
-        drawResults();
-
+        if (packs.length) {
+            packs.sort((a, b) => a.bundles.length - b.bundles.length);
+            packs = [packs[0]];
+            drawResults();
+        }
+        
         text1.disabled = false;
         text2.disabled = false;
         btnAdd.disabled = false;
