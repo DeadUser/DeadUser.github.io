@@ -232,7 +232,7 @@
     function addBundle(bundle) {
         bundles.push(bundle);
         if (bundles.length % 100 == 0)
-            self.postMessage({ title: 'bundles', packs: bundles, message: `Создано ${bundles.length} бухт` });
+            self.postMessage({ title: 'bundles', bundles: bundles, message: `Создано ${bundles.length} бухт` });
     };
 
     function addPack(pack) {
@@ -292,7 +292,7 @@
             packs = [packs[0]];
             drawResults();
         }
-        
+
         text1.disabled = false;
         text2.disabled = false;
         btnAdd.disabled = false;
@@ -321,10 +321,12 @@
     }
 
     function handle(message) {
-        packs = message.data.packs;
+        switch (message.data.title) {
+            case 'result': stopWorker(); break;
+            case 'packs': packs = message.data.packs; break;
+            case 'bundles': bundles = message.data.bundles; break;
+        }
         document.getElementById("message").innerHTML = message.data.message;
-        if (message.data.title == 'result')
-            stopWorker();
     }
 
     function addTube() {
