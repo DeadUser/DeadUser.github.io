@@ -164,7 +164,7 @@
         bundles.sort((a, b) => b.used - a.used);
         combinePacks({ bundles: [] });
 
-        self.postMessage({ title: 'result', packs: packs });
+        self.postMessage({ title: 'result', packs: packs, message: `Готово` });
     }
 
     function bundlesContainTubes(bundles, tubes) {
