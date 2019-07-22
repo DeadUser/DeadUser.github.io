@@ -144,7 +144,7 @@
         switch (msg.data.msg) {
             case 'calculate': calculate(msg.data); break;
             case 'stop': stopper = true; break;
-            default: throw 'Нераспознанное сообщение в worker.';
+            default: throw 'Нераспознаное сообщение в worker.';
         }
     };
 
@@ -188,7 +188,6 @@
 
             if (stopper) return;
 
-
             if (bundlesContainTubes(prev.bundles, bundles[i].tubes)) continue;
 
             var pack = {}
@@ -200,8 +199,6 @@
             if (packContainAllTube(pack.bundles)) {
                 if (!packs.some(p => p.id == pack.id))
                     addPack(pack);
-                if (packs.length % 100 == 0)
-                    self.postMessage({ title: 'packs', packs: packs });
                 return;
             }
 
@@ -211,6 +208,8 @@
 
     function combineInBundles(prev) {
         for (var i = 0; i < this.tubes.length; i++) {
+
+            if (stopper) return;
 
             if (prev.tubes.includes(tubes[i])) return;
 
@@ -232,12 +231,14 @@
 
     function addBundle(bundle) {
         bundles.push(bundle);
-        console.log(`bundles ${bundles.length} bundle ${bundle.id}`);
+        if (bundles.length % 100 == 0)
+            self.postMessage({ title: 'bundles', packs: bundles, message: `Создано ${bundles.length} бухт` });
     };
 
     function addPack(pack) {
         packs.push(pack);
-        console.log(`packs ${packs.length} pack ${pack.id}`);
+        if (packs.length % 100 == 0)
+            self.postMessage({ title: 'packs', packs: packs, message: `Рассмотрено ${packs.length} вариантов` });
     };
 </script>
 
@@ -319,7 +320,7 @@
 
     function handle(message) {
         packs = message.data.packs;
-        document.getElementById("message").innerHTML = `Рассмотренно ${packs.length} вариантов`;
+        document.getElementById("message").innerHTML = message.data.message;
         if (message.data.title == 'result')
             stopWorker();
     }
