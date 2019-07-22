@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>Finance</title>
+</head>
+
+<script>
+    function turnThePage(id) {
+        var sec = document.getElementsByTagName('section');
+        Array.from(sec).forEach(e => e.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
+</script>
+
+<style>
+    body {
+        margin: 0px;
+        background-color: wheat;
+    }
+
+    aside {
+        width: 200px;
+    }
+
+    nav button,
+    section aside button {
+        background-color: transparent;
+        height: 40px;
+        width: 200px;
+        border: 0px;
+    }
+
+    nav button:hover,
+    section aside button:hover {
+        background-color: tomato;
+    }
+
+    section {
+        display: none;
+        height: 5000px;
+    }
+
+    .logo {
+        background-color: transparent;
+        height: 40px;
+        width: 200px;
+        border: 0px;
+        float: left;
+    }
+
+    .bg-red {
+        background-color: rgb(165, 104, 104);
+    }
+
+    .bg-green {
+        background-color: rgb(101, 128, 101);
+    }
+
+    .bg-blue {
+        background-color: rgb(94, 94, 129);
+    }
+</style>
+
+<body>
+    <header></header>
+    <nav>
+        <div class="logo"></div>
+        <button onclick="turnThePage('section1')">Section 1</button>
+        <button onclick="turnThePage('section2')">Section 2</button>
+        <button onclick="turnThePage('section3')">Section 3</button>
+    </nav>
+    <section id="section1" class="bg-red">
+        <aside>
+            <button href="#">Part 1</button>
+            <button href="#">Part 2</button>
+            <button href="#">Part 3</button>
+        </aside>
+    </section>
+    <section id="section2" class="bg-blue"></section>
+    <section id="section3" class="bg-green"></section>
+    <footer></footer>
+</body>
+
+</html>
