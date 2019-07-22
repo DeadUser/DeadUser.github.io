@@ -373,12 +373,18 @@
         return 'abcdefghijklmnopqrstuvwxyz'[num];
     };
 
+    function randomInteger(min, max) {
+        var rand = min - 0.5 + Math.random() * (max - min + 1)
+        rand = Math.round(rand);
+        return rand;
+    }
+
     function test() {
         clear();
         for (var i = 0; i < 15; i++) {
             var tube = {
                 id: numberToSymbol(tubes.length),
-                length: Number((Math.random() * 30) + 30).toFixed(2),
+                length: randomInteger(30, 90),
                 description: String(`Тестовая труба ${tubes.length}`)
             };
             if (tube.length <= 0 || tube.length > bundle) return;
@@ -406,7 +412,7 @@
             for (var b = 0; b < pack.bundles.length; b++) {
                 var bundle = pack.bundles[b];
                 result.innerHTML +=
-                    `<tr><th></th><th>Бухта: ${b + 1}; Использовано: ${Number(Number(bundle.used.toFixed(2)))}; Остаток: ${Number(Number(bundle.stump).toFixed(2))};</th></th>`;
+                    `<tr><th></th><th>Бухта: ${b + 1}; Использовано: ${Number(bundle.used.toFixed(2))}; Остаток: ${Number(bundle.stump)};</th></th>`;
                 for (var t = 0; t < bundle.tubes.length; t++) {
                     var tube = bundle.tubes[t];
                     result.innerHTML +=
