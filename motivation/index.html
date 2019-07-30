@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Мотивация</title>
+</head>
+
+<style>
+    body {
+        background-color: darkgray;
+        background-image: url('https://pp.userapi.com/c855420/v855420066/380ec/q9_zveU4iPY.jpg');
+        background-repeat: no-repeat;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    div {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+    }
+
+    .message {
+        color: darkred;
+        margin: 100px;
+        z-index: -1;
+    }
+</style>
+
+<body id="main">
+    <div class="message">
+        <h1><b>МОТИВАЦИЯ</b></h1>
+    </div>
+</body>
+
+<script>
+    function n() {
+        var min = 50, max = 200;
+        return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+    }
+
+    var content = String();
+    for (var x = 0; x < 27; x++)
+        for (var y = 0; y < 23; y++)
+            content += `<div style="top: ${x * 40}px; left: ${y * 40}px; background: rgb(${n()}, ${n()}, ${n()});" onmouseover="this.remove()"></div>`;
+
+    document.getElementById('main').innerHTML += content;
+</script>
+
+</html>
