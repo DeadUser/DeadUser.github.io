@@ -15,6 +15,7 @@
 <style>
     body {
         margin: 0px;
+        padding: 0px;
         color: darkgrey;
         background-color: black;
     }
@@ -39,7 +40,7 @@
 
     section {
         display: none;
-        height: 5000px;
+        height: 1300px;
     }
 
     .logo {
@@ -50,16 +51,20 @@
         float: left;
     }
 
-    .bg-red {
-        background-color: rgb(165, 104, 104);
+    .bg-green {
+        background-image: url('https://opengameart.org/sites/default/files/styles/medium/public/oga-textures/98737/grass_04.png');
     }
 
-    .bg-green {
-        background-color: rgb(101, 128, 101);
+    .bg-red {
+        background-image: url('https://opengameart.org/sites/default/files/styles/medium/public/Wood02.png');
     }
 
     .bg-blue {
-        background-color: rgb(94, 94, 129);
+        background-image: url('https://opengameart.org/sites/default/files/styles/medium/public/Bricks_004.png');
+    }
+
+    .bg-grad {
+        background-image: radial-gradient(darkgrey, black);
     }
 </style>
 
@@ -70,6 +75,7 @@
         <button onclick="turnThePage('section1')">Section 1</button>
         <button onclick="turnThePage('section2')">Section 2</button>
         <button onclick="turnThePage('section3')">Section 3</button>
+        <button onclick="turnThePage('section4')">Section 4</button>
     </nav>
     <section id="section1" class="bg-red">
         <aside>
@@ -80,6 +86,7 @@
     </section>
     <section id="section2" class="bg-blue"></section>
     <section id="section3" class="bg-green"></section>
+    <section id="section4" class="bg-grad"></section>
     <footer></footer>
 </body>
 
