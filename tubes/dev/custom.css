@@ -1,0 +1,67 @@
+.icon-plus {
+    background-color: #000;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px; 
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.icon-plus:after {
+    background-color: #fff;
+    width: 8px;
+    height: 2px;
+    border-radius: 1px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    position: absolute;
+    top: 7px;
+    left: 4px;
+    content: '';
+}
+
+.icon-plus:before {
+    background-color: #fff;
+    width: 2px;
+    height: 8px;
+    border-radius: 1px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    position: absolute;
+    top: 4px;
+    left: 7px;
+    content: '';
+}
+
+footer {
+    height: 40px;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    position: fixed;
+}
+
+body {
+    background-color: #556;
+}
+
+.text {
+    color: #faa;
+}
+
+#message {
+    height: 50px;
+    text-align: center;
+    padding: 20px;
+    color: #add;
+}
+
+#btn_print,
+#btn_start,
+#btn_stop,
+#btn_clear {
+    width: 49%;
+}
