@@ -1,36 +1,34 @@
-/*properties*/
 'use strict';
 
-/*variables UI*/
-var all = document.getElementsByTagName('*');
-var btnAdd = document.getElementById('btn_add');
-var btnClear = document.getElementById('btn_clear');
-var btnPrint = document.getElementById('btn_print');
-var btnTest = document.getElementById('btn_test');
-var btnStart = document.getElementById('btn_start');
-var btnStop = document.getElementById('btn_stop');
-var text1 = document.getElementById('tube_length');
-var text2 = document.getElementById('tube_desc');
-var data = document.getElementById('tubes');
-var result = document.getElementById('result');
-var message = document.getElementById('message');
-var bundle = document.getElementById('bundle_length');
+var btnClear, btnTest, btnPrint, btnStop, data, result, bundle, all, btnAdd, btnStart, text1, text2, message, worker;
 
-/*preparing UI*/
-Array.from(all).forEach(e => e.tabIndex = '-1')
-text1.tabIndex = '1';
-text2.tabIndex = '2';
-btnAdd.tabIndex = '3';
-btnStart.tabIndex = '4';
+function init() {
+    btnClear = document.getElementById('btn_clear');
+    btnTest = document.getElementById('btn_test');
+    btnPrint = document.getElementById('btn_print');
+    btnStop = document.getElementById('btn_stop');
+    data = document.getElementById('tubes');
+    result = document.getElementById('result');
+    bundle = document.getElementById('bundle_length');
+    all = document.getElementsByTagName('*');
+    btnAdd = document.getElementById('btn_add');
+    btnStart = document.getElementById('btn_start');
+    text1 = document.getElementById('tube_length');
+    text2 = document.getElementById('tube_desc');
+    message = document.getElementById('message');
 
-/*preparing worker*/
-var worker = null;
-var blob = new Blob([document.querySelector('#worker').textContent], { type: 'text/javascript' });
+    Array.from(all).forEach(e => e.tabIndex = '-1')
+    text1.tabIndex = '1';
+    text2.tabIndex = '2';
+    btnAdd.tabIndex = '3';
+    btnStart.tabIndex = '4';
 
-if (typeof (Worker) == 'undefined') {
-    message.innerHTML = 'Этот браузер не поддерживает Workers.. Обратитись к разработчику';
-    throw 'Sorry, your browser does not support Web Workers...';
+    if (typeof (Worker) == 'undefined') {
+        message.innerHTML = 'Этот браузер не поддерживает Workers.. Обратитись к разработчику';
+        throw 'Sorry, your browser does not support Web Workers...';
+    }
 }
+
 
 /*code*/
 var tubes = Array();

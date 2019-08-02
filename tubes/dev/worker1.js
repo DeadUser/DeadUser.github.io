@@ -1,3 +1,5 @@
+'use strict';
+
 self.onmessage = function (msg) {
     switch (msg.data.msg) {
         case 'calculate': calculate(msg.data); break;
