@@ -16,7 +16,7 @@
 		body {
 			height: 100%;
 			width: 100%;
-			background: url("http://images.vfl.ru/ii/1513151627/86f4810d/19788129.jpg") repeat;
+			background: no-repeat center/100% url("https://sun9-18.userapi.com/c858336/v858336302/59317/qLwCyQK-Dsg.jpg") rgb(150, 135, 70);
 			padding-top: 10%;
 		}
 
@@ -28,6 +28,18 @@
 			justify-content: center;
 			display: flex;
 			color: rgb(0, 225, 255);
+		}
+		
+		.cover {
+			content: "";
+			background: #555;
+			opacity: 0.5;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+			z-index: -1;
 		}
 
 		.dud {
@@ -145,16 +157,15 @@
 		}();
 
 		var start = function start() {
-			var phrases = [
-				'Alina', 'all words seems stupid',
-				'but i will try', 'to say something',
+			var phrases = ['Alina, meow meow meow,',
+				'mrrrrrrrr, ¯\_(ツ)_/¯',
+				'this valentine is for you,',
+				'u menya malo slov,',
+				'chtobi chto-to virasit\',',
+				'you are wonderful,',
+				'i tut nado bi kakoi-to epitet,',
+				'but nothing compare you ¯\_(ツ)_/¯',
 				'',
-				'you are beautiful',
-				'i wish you', 'many good feelings',
-				'i lost my mind', 'and i cant', 'to believe in you',
-				'because you are perfect',
-				'i love you',
-				'thanks for you are',
 				''
 			];
 
@@ -175,6 +186,7 @@
 </head>
 
 <body onload="start()">
+	<div class="cover"></div>
 	<div class="text"></div>
 	<div class="heart"></div>
 </body>
