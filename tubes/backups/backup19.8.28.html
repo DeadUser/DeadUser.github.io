@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Калькулятор</title>
+</head>
+
+<link rel="stylesheet" crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
+
+<style>
+    .icon-plus {
+        background-color: #000;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        width: 16px;
+        height: 16px;
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+
+    .icon-plus:after {
+        background-color: #fff;
+        width: 8px;
+        height: 2px;
+        border-radius: 1px;
+        -webkit-border-radius: 1px;
+        -moz-border-radius: 1px;
+        position: absolute;
+        top: 7px;
+        left: 4px;
+        content: '';
+    }
+
+    .icon-plus:before {
+        background-color: #fff;
+        width: 2px;
+        height: 8px;
+        border-radius: 1px;
+        -webkit-border-radius: 1px;
+        -moz-border-radius: 1px;
+        position: absolute;
+        top: 4px;
+        left: 7px;
+        content: '';
+    }
+
+    footer {
+        height: 40px;
+        bottom: 0;
+        width: 100%;
+        background-color: black;
+        position: fixed;
+    }
+
+    body {
+        background-color: #556;
+    }
+
+    .text {
+        color: #faa;
+    }
+
+    #message {
+        height: 50px;
+        text-align: center;
+        padding: 20px;
+        color: #add;
+    }
+
+    #btn_print,
+    #btn_start,
+    #btn_stop,
+    #btn_clear {
+        width: 49%;
+    }
+</style>
+
+<body class='text-light flex'>
+    <div class='container'>
+        <div class='row w-100'>
+            <div class='col-md-6 order-md-1' style='min-width:400px;'>
+                <h1 class='m-2'>Калькулятор</h1>
+
+                <div class='m-2 w-100 m-2' style='height: 40px'>
+                    <button type='button' id='btn_start' class='btn btn-light float-left' onclick='startWorker()'>Посчитать</button>
+                    <button type='button' id='btn_clear' disabled class='btn btn-light float-right' onclick='clearAll()'>Очистить</button>
+                </div>
+
+                <div class='m-2 w-100 m-2' style='height: 40px'>
+                    <button type='button' id='btn_stop' disabled class='btn btn-light float-left' onclick='stopWorker()'>Показать</button>
+                    <button type='button' id='btn_print' disabled class='btn btn-light float-right' onclick='printData()'>Распечатать</button>
+                </div>
+
+                <div id='message' class='m-2'> </div>
+
+                <div class='input-group input-group-sm m-2'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text'>Длина бухты</span>
+                    </div>
+                    <input type='number' class='form-control' min='1' placeholder='Длина' id='bundle_length' value='200'>
+                </div>
+
+                <div class='input-group m-2'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text' id='tube_id'>Труба</span>
+                    </div>
+                    <input type='number' class='form-control' min='0' placeholder='Длина' id='tube_length'>
+                    <input type='text' class='form-control rounded-right' maxlength='30' placeholder='Описание' id='tube_desc'>
+                    <button id='btn_add' type='button' class='btn btn-light float-left ml-2' onclick='addTube()'>
+                        <div class='icon icon-plus'>
+                            <span class='name'></span>
+                        </div>
+                    </button>
+                </div>
+
+                <table class='table m-2 w-100 small'>
+                    <tbody id='tubes' class='text'> </tbody>
+                </table>
+            </div>
+
+            <div class='col-md-6 order-md-2' id='result_for_print'>
+                <table id='result' class='table m-2 w-100 small text'> </table>
+            </div>
+            <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+        </div>
+
+    </div>
+
+    <footer class='footer'>
+        <button id='btn_test' type='button' class='btn btn-sm float-left' disabled onclick='test()'>Тест</button>
+        <div class='footer-copyright m-2 float-right'>© 2019 Copyright:
+            <a href='mailto = egor.domozhirov@gmail.com'> egor.domozhirov@gmail.com</a>
+        </div>
+    </footer>
+</body>
+
+<script id='worker'>
+    self.onmessage = function (msg) {
+        switch (msg.data.msg) {
+            case 'calculate': calculate(msg.data); break;
+            case 'stop': stopper = true; break;
+            default: throw 'Нераспознаное сообщение в worker.';
+        }
+    };
+
+    var stopper = false;
+    var tubes = Array();
+    var bundles = Array();
+    var packs = Array();
+    var bundleLength = Number();
+
+    function calculate(data) {
+
+        bundleLength = data.bundle;
+        tubes = data.tubes.sort((a, b) => a.length - b.length);
+
+        combineInBundles({ tubes: Array() });
+
+        bundles.sort((a, b) => b.used - a.used);
+        combinePacks({ bundles: [] });
+
+        self.postMessage({ title: 'result', packs: packs, message: `Готово` });
+    }
+
+    function bundlesContainTubes(bundles, tubes) {
+        for (var b = 0; b < bundles.length; b++)
+            for (var t = 0; t < bundles[b].tubes.length; t++)
+                if (tubes.some(e => e.id == bundles[b].tubes[t].id))
+                    return true;
+        return false;
+    };
+
+    function packContainAllTube(bundles) {
+        var temp = [];
+        for (var b = 0; b < bundles.length; b++)
+            for (var t = 0; t < bundles[b].tubes.length; t++)
+                temp.push(bundles[b].tubes[t].id);
+        return temp.sort().join('') == tubes.map(t => t.id).sort().join('');
+    };
+
+    function combinePacks(prev) {
+        for (var i = 0; i < bundles.length; i++) {
+
+            if (stopper) return;
+
+            if (bundlesContainTubes(prev.bundles, bundles[i].tubes)) continue;
+
+            var pack = {}
+            pack.bundles = prev.bundles.concat([bundles[i]]);
+            pack.id = pack.bundles.map(b => b.id).sort().join();
+
+            pack.stump = Math.max(pack.bundles.map(b => b.stump));
+
+            if (packContainAllTube(pack.bundles)) {
+                if (!packs.some(p => p.id == pack.id))
+                    addPack(pack);
+                return;
+            }
+
+            combinePacks(pack);
+        }
+    };
+
+    function combineInBundles(prev) {
+        for (var i = 0; i < this.tubes.length; i++) {
+
+            if (stopper) return;
+
+            if (prev.tubes.includes(tubes[i])) return;
+
+            var bundle = {};
+            bundle.tubes = prev.tubes.concat([tubes[i]]);
+            bundle.used = bundle.tubes.map(x => Number(x.length)).reduce((a, b) => a + b);
+
+            if (bundle.used > bundleLength) return;
+
+            bundle.stump = Number(bundleLength - bundle.used).toFixed(2);
+            bundle.id = bundle.tubes.map(t => t.id).sort().join('');
+
+            if (!bundles.some(b => b.id == bundle.id))
+                addBundle(bundle);
+
+            combineInBundles(bundle);
+        }
+    };
+
+    function addBundle(bundle) {
+        bundles.push(bundle);
+        if (bundles.length % 100 == 0)
+            self.postMessage({ title: 'bundles', bundles: bundles, message: `Создано ${bundles.length} бухт` });
+    };
+
+    function addPack(pack) {
+        packs.push(pack);
+        if (packs.length % 100 == 0)
+            self.postMessage({ title: 'packs', packs: packs, message: `Рассмотрено ${packs.length} вариантов` });
+    };
+</script>
+
+<script id='ui'>
+    /*properties*/
+    'use strict';
+
+    /*variables UI*/
+    var all = document.getElementsByTagName('*');
+    var btnAdd = document.getElementById('btn_add');
+    var btnClear = document.getElementById('btn_clear');
+    var btnPrint = document.getElementById('btn_print');
+    var btnTest = document.getElementById('btn_test');
+    var btnStart = document.getElementById('btn_start');
+    var btnStop = document.getElementById('btn_stop');
+    var text1 = document.getElementById('tube_length');
+    var text2 = document.getElementById('tube_desc');
+    var data = document.getElementById('tubes');
+    var result = document.getElementById('result');
+    var message = document.getElementById('message');
+    var bundle = document.getElementById('bundle_length');
+
+    /*preparing UI*/
+    Array.from(all).forEach(e => e.tabIndex = '-1')
+    text1.tabIndex = '1';
+    text2.tabIndex = '2';
+    btnAdd.tabIndex = '3';
+    btnStart.tabIndex = '4';
+
+    /*preparing worker*/
+    var worker = null;
+    var blob = new Blob([document.querySelector('#worker').textContent], { type: 'text/javascript' });
+
+    if (typeof (Worker) == 'undefined') {
+        message.innerHTML = 'Этот браузер не поддерживает Workers.. Обратитись к разработчику';
+        throw 'Sorry, your browser does not support Web Workers...';
+    }
+
+    /*code*/
+    var tubes = Array();
+    var bundles = Array();
+    var packs = Array();
+
+    function stopWorker() {
+        worker.postMessage({ msg: 'stop' });
+        worker.terminate();
+        worker = undefined;
+
+        if (packs.length) {
+            packs.sort((a, b) => a.bundles.length - b.bundles.length);
+            packs = [packs[0]];
+            drawResults();
+        }
+
+        text1.disabled = false;
+        text2.disabled = false;
+        btnAdd.disabled = false;
+        btnStart.disabled = false;
+        btnPrint.disabled = false;
+        bundle.disabled = false;
+        btnClear.disabled = false;
+        btnStop.disabled = true;
+    }
+
+    function startWorker() {
+        text1.disabled = true;
+        text2.disabled = true;
+        btnAdd.disabled = true;
+        btnPrint.disabled = true;
+        btnStart.disabled = true;
+        bundle.disabled = true;
+        btnClear.disabled = true;
+        btnStop.disabled = false;
+
+        clear(false);
+        text1.enabled = false;
+        worker = new Worker(window.URL.createObjectURL(blob));
+        worker.onmessage = message => handle(message);
+        worker.postMessage({ msg: 'calculate', tubes: tubes, bundle: bundle.value });
+    }
+
+    function handle(message) {
+        switch (message.data.title) {
+            case 'result': stopWorker(); break;
+            case 'packs': packs = message.data.packs; break;
+            case 'bundles': bundles = message.data.bundles; break;
+        }
+        document.getElementById("message").innerHTML = message.data.message;
+    }
+
+    function addTube() {
+        var tube = {
+            id: numberToSymbol(tubes.length),
+            length: Number(text1.value).toFixed(2),
+            description: String(text2.value)
+        };
+        if (tube.length <= 0 || tube.length > bundle) return;
+        tubes.push(tube);
+
+        drawTubes();
+    };
+
+    function drawTubes() {
+        data.innerHTML = String();
+        for (var i = tubes.length - 1; i >= 0; i--)
+            data.innerHTML += `<tr><td>${Number(tubes[i].length)}</td><td>${tubes[i].description}</td>
+                <td><button tabindex='-1' onclick='deleteTube("${tubes[i].id}")'></td></tr>`;
+    };
+
+    function deleteTube(id) {
+        tubes = tubes.filter((e) => e.id != id);
+        drawTubes();
+    };
+
+    function clear(all = true) {
+        if (all) clearAll();
+        bundles = [];
+        packs = [];
+        drawTubes();
+        drawResults();
+    };
+
+    function clearAll() {
+        message.innerHTML = String();
+        text1.value = String();
+        text2.value = String();
+        tubes = [];
+        bundles = [];
+        packs = [];
+
+        drawTubes();
+        drawResults();
+    };
+
+    function numberToSymbol(num) {
+        return 'abcdefghijklmnopqrstuvwxyz'[num];
+    };
+
+    function randomInteger(min, max) {
+        var rand = min - 0.5 + Math.random() * (max - min + 1)
+        rand = Math.round(rand);
+        return rand;
+    }
+
+    function test() {
+        clear();
+        for (var i = 0; i < 15; i++) {
+            var tube = {
+                id: numberToSymbol(tubes.length),
+                length: randomInteger(30, 90),
+                description: String(`Тестовая труба ${tubes.length}`)
+            };
+            if (tube.length <= 0 || tube.length > bundle) return;
+            tubes.push(tube);
+        }
+        drawTubes();
+        startWorker();
+    };
+
+    function drawResults() {
+        result.innerHTML = String();
+        if (!packs.length || !packs[0])
+            return;
+
+        result.innerHTML =
+            `<thead><tr>
+                <th scope='col'>Длина</th>
+                <th scope='col'>Примечание</th>
+                </tr></thead><tbody>`;
+
+        for (var p = 0; p < packs.length; p++) {
+            var pack = packs[p];
+
+            //result.innerHTML += `<tr><th></th><th><br><br>ВАРИАНТ ${p + 1}</th></tr>`
+            for (var b = 0; b < pack.bundles.length; b++) {
+                var bundle = pack.bundles[b];
+                result.innerHTML +=
+                    `<tr><th></th><th>Бухта: ${b + 1}; Использовано: ${Number(bundle.used.toFixed(2))}; Остаток: ${Number(bundle.stump)};</th></th>`;
+                for (var t = 0; t < bundle.tubes.length; t++) {
+                    var tube = bundle.tubes[t];
+                    result.innerHTML +=
+                        `<tr><td>${tube.length}</td><td>${tube.description}</td></tr>`;
+                }
+            }
+
+        }
+        result.innerHTML += `</tbody>`;
+        result.innerHTML += `<div style="height: 100px;"></div>`;
+    };
+
+    function printData() {
+        window.frames["print_frame"].document.body.innerHTML = String();
+        window.frames["print_frame"].document.body.innerHTML += `<style type='text/css'>table { border-collapse: collapse; width: 100%; } table, th, td { border: 1px solid black; }</style>`
+        window.frames["print_frame"].document.body.innerHTML += document.getElementById("result_for_print").innerHTML;
+        window.frames["print_frame"].window.focus();
+        window.frames["print_frame"].window.print();
+    }
+
+</script>
+
+</html>
