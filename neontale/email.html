@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=windows-1251">
+</head>
+<script type="text/javascript">
+    var email;
+    var subj = "тема письма";
+    var tel = "собственно тело письма";
+
+    function SendMail(sRecipientMail, sSubject, sMsgBody, files) {
+        try {
+            var refMsg = WScript.CreateObject("CDO.Message");
+            var refConf = WScript.CreateObject("CDO.Configuration");
+            with (refConf.Fields) {
+                Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp.mail.ru";
+                Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2;
+                Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1;
+                Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "lou@list.ru";
+                Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "***";
+            }
+
+            refConf.Fields.Update();
+
+            with (refMsg) {
+                Configuration = refConf;
+                To = sRecipientMail;
+                From = "lou@list.ru";
+                Subject = sSubject;
+                TextBody = sMsgBody;
+            }
+            if (files) {
+                for (var i = 0; i < files.length; i++)refMsg.AddAttachment(files[i]);
+            }
+            refMsg.Send();
+        } catch (e) {
+            WScript.Echo("SendMail error !!! : " + e.description); WScript.Quit(1);
+        }
+    }
+</script>
+
+<body>
+    <td align="center">
+        <h3>Заявка на получение файла</h3>
+        <form onsubmit="SendMail(this.email.value, this.user.value, this.tel.value); return false">
+            <p><input type="text" size="40" placeholder="Ваше имя" name="user"></p>
+            <p><input type="text" size="40" placeholder="Телефон" name="tel"></p>
+            <p><input type="text" size="40" placeholder="E-mail" name="email"></p>
+            <p><input type="submit" value="Получить"></p>
+        </form>При нажатии кнопки "Получить", будет отправлен файл test.pdf на указанный почтовый адрес с темой: "Тестовое письмо" и подписью: "С уважением, группа техподдержки".
+        Также будет отправлено письмо на адрес testsupport@mail.ru, в котором будут указаны введенные; Имя, телефон, почта.<br>* Поля Имя и email обязательны для заполнения
+</body>
+
+</html>

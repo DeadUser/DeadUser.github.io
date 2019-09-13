@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Neon Tale</title>
+</head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<script src="js/controllers/app.js"></script>
+<script src="js/controllers/signController.js"></script>
+
+<body>
+    <div ng-controller="signController" class="container col-md-12">
+        <h1>Neon Tale</h1>
+        <p>Здесь вы сможете собрать ваш заказ</p>
+        <p>{{phone}}</p>
+        <input type="text" ng-model="phone">
+        <p>Цена: {{price}}</p>
+        <button class="btn btn-default">Заказать</button>
+    </div>
+</body>
+
+
+</html>

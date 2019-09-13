@@ -1,6 +1,16 @@
 'use strict';
 app.controller("calculatorController", function ($scope) {
-    $scope.list = tubes;
+    $scope.list = [];
+
+    $scope.phone = {
+        name: 'Nokia Lumia 630',
+        year: 2014,
+        price: 200,
+        company: {
+            name: 'Nokia',
+            country: 'Финляндия'
+        }
+    };
 
     $scope.addItem = function (text, price) {
         price = parseFloat(price);
