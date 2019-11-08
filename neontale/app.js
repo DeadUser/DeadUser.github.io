@@ -20,7 +20,7 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('bodyController', function ($scope) {
-    $scope.text = 'Ваш текст';
+    $scope.text = 'Пример';
     $scope.cost = 0;
 
     $scope.$watch("text", function () {

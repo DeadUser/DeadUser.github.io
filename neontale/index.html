@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />-->
-    <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />-->
+
     <link rel="stylesheet" href="bootstrap.min.css" />
-    <link rel="stylesheet" href="font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="jsсolor.js"></script>
     <script src="app.js"></script>
 </head>
 
@@ -19,39 +19,63 @@
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Document</a>
+                <a class="navbar-brand" href="#">NeonTale</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
-                <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
+                <li><a href="#"><i class="fa fa-home"></i> Главная</a></li>
+                <li><a href="#about"><i class="fa fa-user"></i> О нас</a></li>
+                <li><a href="#contact"><i class="fa fa-comment"></i> Контакты</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="panel-body">
         <div class="row">
-            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text"></div>
-            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="Ваш шрифт"></div>
-            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="Ваш цвет"></div>
-        </div>
-        <div class="row"><br></div>
-        <div class="row">
-            <div class="col">
-                <div class="text-center">{{text}}</div>
+            <div class="col-md-2 center"> </div>
+            <div class="col-md-8 center">
+                <div class="row">
+                    <div class="col col-md-3">
+                        <div class="text-center"><br>Ваш текст</div>
+                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text">
+                        <div class="text-center"><br>Ваш шрифт</div>
+                        <select type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <div class="text-center"><br>Ваш цвет</div>
+                        <input class="form-control jscolor" value="ab2567">
+                        <div class="text-center"><br>Размер</div>
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="25" value="15" class="slider-color" id="myRange">
+                        </div>
+                    </div>
+                    <div class="col col-md-7">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="img-wrap">
+                                    <img src="img/s1200.webp" class="img-responsive">
+                                    <h1 class="text-center"><b>{{text}}</b></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-2">
+                        <h4 class="text-center"><br>Цена: {{cost}} р</h4>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="text-center">Цена: {{cost}}</div>
-            </div>
+            <div class="col-md-2 center"> </div>
         </div>
     </div>
-
     <footer class="text-center panel-footer">
         Enjoy!
     </footer>
 
 </body>
+
 </html>
+
 </html>
