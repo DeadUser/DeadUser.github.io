@@ -1,301 +1,57 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, maximum-scale=1">
-
-    <title>Neon Tale</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="shortcut icon" href="favicon.ico" type="img/x-icon">
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,800italic,700italic,600italic,400italic,300italic,800,700,600' rel='stylesheet' type='text/css'>
-
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/font-awesome.css" rel="stylesheet" type="text/css">
-    <link href="css/responsive.css" rel="stylesheet" type="text/css">
-    <link href="css/magnific-popup.css" rel="stylesheet" type="text/css">
-    <link href="css/animate.css" rel="stylesheet" type="text/css">
-
-    <script type="text/javascript" src="js/jquery.1.8.3.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
-    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-    <script type="text/javascript" src="js/jquery.isotope.js"></script>
-    <script type="text/javascript" src="js/wow.js"></script>
-    <script type="text/javascript" src="js/classie.js"></script>
-    <script type="text/javascript" src="js/magnific-popup.js"></script>
-    <script type="text/javascript" src="js/contactform.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />-->
+    <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />-->
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="font-awesome.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="app.js"></script>
 </head>
 
-<body>
-
-    <nav class="main-nav-outer" id="test">
-
+<body ng-controller="bodyController">
+    <nav class="navbar navbar-default">
         <div class="container">
-            <ul class="main-nav">
-                <li class="small-logo">
-                    <a href="#header"><img src="img/small-logo.png" alt=""></a>
-                </li>
-                <li><a href="#service">Конструктор</a></li>
-                <li><a href="#Portfolio">Портфолио</a></li>
-                <li><a href="#contact">Связаться</a></li>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Document</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
             </ul>
-            <a class="res-nav_click" href="#"><i class="fa fa-bars"></i></a>
         </div>
     </nav>
 
-    <section class="main-section" id="service">
-        <div class="container">
-            <h2>Конструктор</h2>
-            <h6>Мы предлагаем вам легко собрать вывеску</h6>
-            <div class="row">
-                <figure class="col-lg-8 col-sm-6  text-right wow fadeInUp delay-02s">
-                    <img src="img/macbook-pro.png" alt="">
-                </figure>
-
-                <div class="col-lg-4 col-sm-6 wow fadeInLeft delay-05s">
-                    <div class="service-list">
-                        <div class="service-list-col1">
-                            <i class="fa fa-paw"></i>
-                        </div>
-                        <div class="service-list-col2">
-                            <h3>branding &amp; identity</h3>
-                            <p>Proin iaculis purus digni consequat sem digni ssim. Donec entum digni ssim.</p>
-                        </div>
-                    </div>
-                    <div class="service-list">
-                        <div class="service-list-col1">
-                            <i class="fa fa-gear"></i>
-                        </div>
-                        <div class="service-list-col2">
-                            <h3>web development</h3>
-                            <p>Proin iaculis purus consequat sem digni ssim. Digni ssim porttitora .</p>
-                        </div>
-                    </div>
-                    <div class="service-list">
-                        <div class="service-list-col1">
-                            <i class="fa fa-apple"></i>
-                        </div>
-                        <div class="service-list-col2">
-                            <h3>mobile design</h3>
-                            <p>Proin iaculis purus consequat digni sem digni ssim. Purus donec porttitora entum.</p>
-                        </div>
-                    </div>
-                    <div class="service-list">
-                        <div class="service-list-col1">
-                            <i class="fa fa-medkit"></i>
-                        </div>
-                        <div class="service-list-col2">
-                            <h3>24/7 Support</h3>
-                            <p>Proin iaculis purus consequat sem digni ssim. Sem porttitora entum.</p>
-                        </div>
-                    </div>
-                </div>
-
-
+    <div class="panel-body">
+        <div class="row">
+            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text"></div>
+            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="Ваш шрифт"></div>
+            <div class="col col-md-4"><input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="Ваш цвет"></div>
+        </div>
+        <div class="row"><br></div>
+        <div class="row">
+            <div class="col">
+                <div class="text-center">{{text}}</div>
             </div>
         </div>
-    </section>
-
-    <section class="main-section paddind" id="Portfolio">
-
-        <div class="container">
-            <h2>Портфолио</h2>
-            <!--<h6>Fresh portfolio of designs that will keep you wanting more.</h6>-->
-            <div class="portfolioFilter">
-                <ul class="Portfolio-nav wow fadeIn delay-02s">
-                    <li><a href="#" data-filter="*" class="current">Все</a></li>
-                    <li><a href="#" data-filter=".stext">Текст</a></li>
-                    <li><a href="#" data-filter=".simage">Рисунки</a></li>
-                </ul>
-            </div>
-
-        </div>
-        <div class="portfolioContainer wow fadeInUp delay-04s">
-            <div class="Portfolio-box stext">
-                <a href="img/Portfolio-pic2.jpg"><img src="img/Portfolio-pic2.jpg" alt=""></a>
-                <h3>Название</h3>
-                <p>Описание</p>
-            </div>
-            <div class=" Portfolio-box simage">
-                <a href="img/Portfolio-pic3.jpg"><img src="img/Portfolio-pic3.jpg" alt=""></a>
-                <h3>Название</h3>
-                <p>Описание</p>
-            </div>
-            <div class=" Portfolio-box simage">
-                <a href="img/Portfolio-pic4.jpg"><img src="img/Portfolio-pic4.jpg" alt=""></a>
-                <h3>Название</h3>
-                <p>Описание</p>
-            </div>
-            <div class=" Portfolio-box simage">
-                <a href="img/Portfolio-pic5.jpg"><img src="img/Portfolio-pic5.jpg" alt=""></a>
-                <h3>Название</h3>
-                <p>Описание</p>
-            </div>
-            <div class=" Portfolio-box simage">
-                <a href="img/Portfolio-pic6.jpg"><img src="img/Portfolio-pic6.jpg" alt=""></a>
-                <h3>Название</h3>
-                <p>Описание</p>
+        <div class="row">
+            <div class="col">
+                <div class="text-center">Цена: {{cost}}</div>
             </div>
         </div>
-    </section>
-
-    <section class="business-talking" id="contact">
-        <div class="container">
-            <h2>Свяжитесь с нами</h2>
-        </div>
-    </section>
-
-    <div class="container">
-        <section class="main-section contact">
-
-            <div class="row">
-                <div class="col-lg-6 col-sm-7 wow fadeInLeft">
-                    <div class="contact-info-box address clearfix">
-                        <h3><i class=" icon-map-marker"></i>Адрес:</h3>
-                        <span>Нижний Новгород, Россия
-                            <br>Улица Тимирязева, 35</span>
-                    </div>
-                    <div class="contact-info-box phone clearfix">
-                        <h3><i class="fa fa-phone"></i>Телефон:</h3>
-                        <span>8-987-654-3210</span>
-                    </div>
-                    <div class="contact-info-box email clearfix">
-                        <h3><i class="fa fa-pencil"></i>email:</h3>
-                        <span>egor.domozhirov@gmail.com</span>
-                    </div>
-                    <div class="contact-info-box hours clearfix">
-                        <h3><i class="fa fa-clock-o"></i>Время работы:</h3>
-                        <span><strong>Понедельник - среда:</strong> 12:00- 18:00<br><strong>Четверг - воскресенье:</strong> Люди в эти дни работают?<br></span>
-                    </div>
-                    <ul class="social-link">
-                        <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        <li class="gplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li class="dribbble"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-6 col-sm-5 wow fadeInUp delay-05s">
-                    <div class="form">
-
-                        <div id="sendmessage">Ваше сообщение было отправлено. Спасибо!</div>
-                        <div id="errormessage"></div>
-                        <form action="http://formspree.io/egor.domozhirov@gmail.com" method="post" role="form" class="contactForm">
-                            <div class="form-group">
-                                <input type="text" name="name" class="form-control input-text" id="name" placeholder="Имя" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                <div class="validation"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control input-text" name="email" id="email" placeholder="Ваш email" data-rule="email" data-msg="Please enter a valid email" />
-                                <div class="validation"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control input-text" name="subject" id="subject" placeholder="Заголовок" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                                <div class="validation"></div>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control input-text text-area" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Сообщение"></textarea>
-                                <div class="validation"></div>
-                            </div>
-
-                            <div class="text-center"><button type="submit" class="input-btn">Отправить</button></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </div>
 
-    <script type="text/javascript">
-        $(document).ready(function(e) {
-
-            $('#test').scrollToFixed();
-            $('.res-nav_click').click(function() {
-                $('.main-nav').slideToggle();
-                return false
-
-            });
-
-            $('.Portfolio-box').magnificPopup({
-                delegate: 'a',
-                type: 'image'
-            });
-
-        });
-    </script>
-
-    <script>
-        wow = new WOW({
-            animateClass: 'animated',
-            offset: 100
-        });
-        wow.init();
-    </script>
-
-
-    <script type="text/javascript">
-        $(window).load(function() {
-
-            $('.main-nav li a, .servicelink').bind('click', function(event) {
-                var $anchor = $(this);
-
-                $('html, body').stop().animate({
-                    scrollTop: $($anchor.attr('href')).offset().top - 102
-                }, 1500, 'easeInOutExpo');
-                /*
-                if you don't want to use the easing effects:
-                $('html, body').stop().animate({
-                	scrollTop: $($anchor.attr('href')).offset().top
-                }, 1000);
-                */
-                if ($(window).width() < 768) {
-                    $('.main-nav').hide();
-                }
-                event.preventDefault();
-            });
-        })
-    </script>
-
-    <script type="text/javascript">
-        $(window).load(function() {
-            var $container = $('.portfolioContainer'),
-                $body = $('body'),
-                colW = 375,
-                columns = null;
-
-            $container.isotope({
-                resizable: true,
-                masonry: {
-                    columnWidth: colW
-                }
-            });
-
-            $(window).smartresize(function() {
-                var currentColumns = Math.floor(($body.width() - 30) / colW);
-                if (currentColumns !== columns) {
-                    columns = currentColumns;
-                    $container.width(columns * colW).isotope('reLayout');
-                }
-            }).smartresize();
-            $('.portfolioFilter a').click(function() {
-                $('.portfolioFilter .current').removeClass('current');
-                $(this).addClass('current');
-
-                var selector = $(this).attr('data-filter');
-                $container.isotope({
-                    filter: selector,
-                });
-                return false;
-            });
-        });
-    </script>
+    <footer class="text-center panel-footer">
+        Enjoy!
+    </footer>
 
 </body>
-
+</html>
 </html>
