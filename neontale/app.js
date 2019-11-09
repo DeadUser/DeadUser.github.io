@@ -17,29 +17,44 @@ app.config(function($routeProvider) {
 
 app.controller('mainController', function($scope) {
     $scope.cost = 0;
-    $scope.fonts = [
-        `'Pacifico', cursive`,
+    $scope.fonts1 = [
         `'Caveat', cursive`,
+        `'Pacifico', cursive`,
+        `Alpha Echo`,
+        `'Bad Script', cursive`,
         `'Poiret One', cursive`,
         `'Russo One', sans-serif`,
         `'Marck Script', cursive`,
-        `'Bad Script', cursive`,
         `'Press Start 2P', cursive`,
-        `'Times New Roman', Times, serif`,
-        `Arial, Helvetica, sans-serif`,
         `'Courier New', Courier, monospace`,
-        `Alpha Echo`
+        `Arial, Helvetica, sans-serif`,
+        `'Times New Roman', Times, serif`
     ];
+
+    $scope.fonts = [
+        { name: `Alpha Echo`, desc: 'Alpha Echo' },
+        { name: `'Caveat', cursive`, desc: 'Caveat' },
+        { name: `'Pacifico', cursive`, desc: 'Pacifico' },
+        { name: `'Bad Script', cursive`, desc: 'Bad Script' },
+        { name: `'Poiret One', cursive`, desc: 'Poiret One' },
+        { name: `'Russo One', sans-serif`, desc: 'Russo One' },
+        { name: `'Marck Script', cursive`, desc: 'Marck Script' },
+        { name: `'Press Start 2P', cursive`, desc: 'Press Start' },
+        { name: `'Courier New', Courier, monospace`, desc: 'Courier New' },
+        { name: `Arial, Helvetica, sans-serif`, desc: 'Arial, Helvetica' },
+        { name: `'Times New Roman', Times, serif`, desc: 'Times New Roman' }
+    ];
+
     $scope.text = {
-        value: 'Example',
-        font: $scope.fonts[0],
-        color: '631F00',
+        value: 'Welcome',
+        font: $scope.fonts[0].name,
+        color: '630C0C',
         size: 50
     };
 
     $scope.$watchGroup(['text.value', 'text.font', 'text.color', 'text.size'], function() {
         $scope.style = {
-            'font-family': $scope.text.font,
+            'font-family': $scope.fonts.filter(o => o.desc == $scope.text.font)[0].name,
             'color': `#${$scope.text.color}`,
             'font-size': `${$scope.text.size}px`,
             'font-style': `${$scope.text.bold? 'italic': 'normal'},`,

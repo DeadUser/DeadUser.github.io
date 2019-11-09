@@ -7167,3 +7167,7 @@ h3 {
     background: #4CAF50;
     cursor: pointer;
 }
+
+option {
+    font-size: 20px;
+}
