@@ -17,19 +17,6 @@ app.config(function($routeProvider) {
 
 app.controller('mainController', function($scope) {
     $scope.cost = 0;
-    $scope.fonts1 = [
-        `'Caveat', cursive`,
-        `'Pacifico', cursive`,
-        `Alpha Echo`,
-        `'Bad Script', cursive`,
-        `'Poiret One', cursive`,
-        `'Russo One', sans-serif`,
-        `'Marck Script', cursive`,
-        `'Press Start 2P', cursive`,
-        `'Courier New', Courier, monospace`,
-        `Arial, Helvetica, sans-serif`,
-        `'Times New Roman', Times, serif`
-    ];
 
     $scope.fonts = [
         { name: `Alpha Echo`, desc: 'Alpha Echo' },
