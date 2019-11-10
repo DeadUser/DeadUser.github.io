@@ -1,0 +1,41 @@
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-1 center"> </div>
+        <div class="col-md-10 center">
+            <div class="row">
+                <form class="col col-md-3">
+                    <div class="text-center"><br>Ваш текст</div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.value">
+                    <div class="text-center"><br>Ваш шрифт</div>
+                    <select type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.font">
+                        <option ng-repeat="font in fonts" class="" style="font-family:{{font.name}}">{{font.desc}}</option>
+                    </select>
+                    <div class="text-center"><br>Ваш цвет</div>
+                    <input class="form-control jscolor" ng-model="text.color">
+                    <div class="text-center"><br>Размер: {{text.size}} см</div>
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="75" ng-model="text.size" class="slider-color" id="myRange">
+                    </div>
+                </form>
+                <div class="col col-md-7">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="img-wrap">
+                                <img src="img/s1200.webp" class="img-responsive">
+                                <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-2">
+                    <h4 class="text-center"><br>Цена: {{cost}} р</h4>
+                    <form class="container" action="mailto:egor.domozhirov@mail.ru?subject=Заказать" method="POST">
+                        <button type="submit" class="btn btn-light">Заказать</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-1 center"> </div>
+    </div>
+</div>

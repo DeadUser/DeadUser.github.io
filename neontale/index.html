@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link href="https://fonts.googleapis.com/css?family=Bad+Script|Caveat|Marck+Script|Pacifico|Poiret+One|Press+Start+2P|Russo+One&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js"></script>
     <script src="jsсolor.js"></script>
     <script src="app.js"></script>
 </head>
@@ -21,57 +21,16 @@
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">NeonTale</a>
+                <a class="navbar-brand" href="#/">NeonTale</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="fa fa-home"></i> Конструктор</a></li>
-                <li><a href="#about"><i class="fa fa-user"></i> О нас</a></li>
-                <li><a href="#contact"><i class="fa fa-comment"></i> Контакты</a></li>
+                <li><a href="#/constructor"><i class="fa fa-home"></i> Конструктор</a></li>
+                <li><a href="#/about"><i class="fa fa-user"></i> О нас</a></li>
+                <li><a href="#/contact"><i class="fa fa-comment"></i> Контакты</a></li>
             </ul>
         </div>
     </nav>
-
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-1 center"> </div>
-            <div class="col-md-10 center">
-                <div class="row">
-                    <form class="col col-md-3">
-                        <div class="text-center"><br>Ваш текст</div>
-                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.value">
-                        <div class="text-center"><br>Ваш шрифт</div>
-                        <select type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.font">
-                            <option ng-repeat="font in fonts" class="" style="font-family:{{font.name}}">{{font.desc}}</option>
-                        </select>
-                        <div class="text-center"><br>Ваш цвет</div>
-                        <input class="form-control jscolor" ng-model="text.color">
-                        <div class="text-center"><br>Размер: {{text.size}} см</div>
-                        <div class="slidecontainer">
-                            <input type="range" min="1" max="75" ng-model="text.size" class="slider-color" id="myRange">
-                        </div>
-                    </form>
-                    <div class="col col-md-7">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="img-wrap">
-                                    <img src="img/s1200.webp" class="img-responsive">
-                                    <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b></h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-md-2">
-                        <h4 class="text-center"><br>Цена: {{cost}} р</h4>
-                        <form class="container" action="mailto:egor.domozhirov@mail.ru?subject=Заказать&body=%0D%0A%3Cbr%3E%D0%A2%D0%B5%D0%BA%D1%81%D1%82%3A+text.value%0D%0A%3Cbr%3E%D0%A8%D1%80%D0%B8%D1%84%D1%82%3A+text.font%0D%0A%3Cbr%3E%D0%A6%D0%B2%D0%B5%D1%82%3A+text.color%0D%0A%3Cbr%3E%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%80%3A+text.size+%D1%81%D0%BC" method="POST">
-                            <button type="submit" class="btn btn-light">Заказать</button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-1 center"> </div>
-        </div>
-    </div>
+    <div ng-view></div>
 </body>
 
 </html>
