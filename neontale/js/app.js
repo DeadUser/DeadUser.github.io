@@ -1,9 +1,9 @@
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute','colorpicker']);
 
 app.config(function($routeProvider) {
-    $routeProvider.when('/', {
-            templateUrl: 'pages/home.html',
-            controller: 'mainController'
+    $routeProvider.when('/constructor', {
+            templateUrl: 'pages/constructor.html',
+            controller: 'constructorController'
         })
         .when('/about', {
             templateUrl: 'pages/about.html',
@@ -12,10 +12,13 @@ app.config(function($routeProvider) {
         .when('/contact', {
             templateUrl: 'pages/contact.html',
             controller: 'contactController'
+        }).
+        otherwise({
+            redirectTo: '/constructor'
         });
 });
 
-app.controller('mainController', function($scope) {
+app.controller('constructorController', function($scope) {
     $scope.cost = 0;
 
     $scope.fonts = [
@@ -35,14 +38,15 @@ app.controller('mainController', function($scope) {
     $scope.text = {
         value: 'Welcome',
         font: $scope.fonts[0].name,
-        color: '630C0C',
-        size: 50
+        color: '#630C0C',
+        size: 50,
+        inshape: true
     };
 
-    $scope.$watchGroup(['text.value', 'text.font', 'text.color', 'text.size'], function() {
+    $scope.$watchGroup(['text.value', 'text.font', 'text.color', 'text.size', 'text.inshape'], function() {
         $scope.style = {
             'font-family': $scope.fonts.filter(o => o.desc == $scope.text.font)[0].name,
-            'color': `#${$scope.text.color}`,
+            'color': `${$scope.text.color}`,
             'font-size': `${$scope.text.size}px`,
             'font-style': `${$scope.text.bold? 'italic': 'normal'},`,
             'font-weight': `${$scope.text.bold? 'bold' : 'normal'}`

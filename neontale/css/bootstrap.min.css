@@ -1745,7 +1745,6 @@ textarea.form-control {
 .radio label,
 .checkbox label {
     display: inline;
-    margin-bottom: 0;
     font-weight: normal;
     cursor: pointer
 }
@@ -7170,4 +7169,57 @@ h3 {
 
 option {
     font-size: 20px;
+}
+
+.checkbox-custom {
+    position: relative;
+    width: 100%;
+    height: 16px;
+    margin: 0;
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0;
+}
+
+.checkbox-custom:after {
+    content: '';
+    float: left;
+    position: absolute;
+    display: block;
+    z-index: 1;
+    width: 100%;
+    height: 16px;
+    border: 1px solid #999;
+    border-radius: 2px;
+}
+
+.checkbox-custom[type=checkbox]:before {
+    background: #999 url("../checkmark.png");
+    background-size: 10px 8px;
+    background-repeat: no-repeat;
+    background-position: 45% 3px;
+    position: absolute;
+    left: 2px;
+    z-index: 2;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    color: #999;
+}
+
+.checkbox-custom[type=checkbox]:checked:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    opacity: 1;
+    left: 0px;
+    border: 1px solid #333;
+    border-radius: 2px;
 }

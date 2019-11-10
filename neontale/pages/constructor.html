@@ -1,0 +1,42 @@
+<form class="row" action="mailto:egor.domozhirov@mail.ru?subject=Заказать" method="POST">
+    <div class="col col-md-3">
+        <div class="text-center"><br>Ваш текст</div>
+        <input name="Text" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.value">
+
+        <div class="text-center"><br>Ваш шрифт</div>
+        <select name="Font" type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.font">
+            <option ng-repeat="font in fonts" class="" style="font-family:{{font.name}}">{{font.desc}}</option>
+        </select>
+
+        <div class="text-center"><br>Ваш цвет</div>
+        <input name="Color" color-picker color-picker-model="text.color" ng-style="{background:text.color,color:text.color}" class="form-control" color-picker-output-format="hex" color-picker-position="bottom" />
+
+        <div class="text-center"><br>Размер: {{text.size}} см</div>
+        <div class="slidecontainer">
+            <input name="Size" type="range" min="1" max="75" ng-model="text.size" class="slider-color" id="myRange">
+        </div>
+
+        <div class="text-center"><br> Основание по форме букв</div>
+        <div>
+            <input name="Inshape" class="checkbox-custom" type="checkbox" ng-model="text.inshape">
+        </div>
+    </div>
+    <div class="col col-md-7">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="img-wrap">
+                    <img src="img/s1200.webp" class="img-responsive">
+                    <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col-md-2">
+        <h4 class="text-center"><br>Цена: </h4>
+        <input name="Cost" class="form-control" disabled type="text" ng-model="cost">
+        <br>
+        <button type="submit" class="btn btn-default col-md-12">Заказать</button>
+
+    </div>
+</form>

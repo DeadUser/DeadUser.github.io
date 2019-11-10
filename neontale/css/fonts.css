@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: 'Alpha Echo';
-    src: url('fonts/alpha_echo.ttf') format('truetype');
+    src: url('../fonts/alpha_echo.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
