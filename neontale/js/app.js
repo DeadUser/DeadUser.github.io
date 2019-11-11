@@ -1,10 +1,10 @@
-var app = angular.module('app', ['ngRoute','colorpicker']);
+var app = angular.module('app', ['ngRoute', 'color.picker']);
 
-app.config(function($routeProvider) {
+app.config(function ($routeProvider) {
     $routeProvider.when('/constructor', {
-            templateUrl: 'pages/constructor.html',
-            controller: 'constructorController'
-        })
+        templateUrl: 'pages/constructor.html',
+        controller: 'constructorController'
+    })
         .when('/about', {
             templateUrl: 'pages/about.html',
             controller: 'aboutController'
@@ -18,8 +18,19 @@ app.config(function($routeProvider) {
         });
 });
 
-app.controller('constructorController', function($scope) {
+app.controller('constructorController', function ($scope) {
     $scope.cost = 0;
+    $scope.bgFile = 0;
+
+    $scope.handleFileSelect = function (evt) {
+        var files = evt.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            if (!f.type.match('image.*')) { continue; }
+            var reader = new FileReader();
+            reader.onload = (function (file) { return function (e) { debugger; $scope.bgFile = e.target.result; }; })(f);
+            reader.readAsDataURL(f);
+        }
+    }
 
     $scope.fonts = [
         { name: `Alpha Echo`, desc: 'Alpha Echo' },
@@ -43,22 +54,26 @@ app.controller('constructorController', function($scope) {
         inshape: true
     };
 
-    $scope.$watchGroup(['text.value', 'text.font', 'text.color', 'text.size', 'text.inshape'], function() {
+    $scope.$watchGroup(['text.value', 'text.font', 'text.color', 'text.size', 'text.inshape'], function () {
         $scope.style = {
             'font-family': $scope.fonts.filter(o => o.desc == $scope.text.font)[0].name,
             'color': `${$scope.text.color}`,
             'font-size': `${$scope.text.size}px`,
-            'font-style': `${$scope.text.bold? 'italic': 'normal'},`,
-            'font-weight': `${$scope.text.bold? 'bold' : 'normal'}`
+            'font-style': `${$scope.text.bold ? 'italic' : 'normal'},`,
+            'font-weight': `${$scope.text.bold ? 'bold' : 'normal'}`
         };
         $scope.cost = $scope.text.value.length * 1500;
     });
+
+    $scope.getFont = function (font) {
+        return { fontFamily: font.name };
+    }
 });
 
-app.controller('aboutController', function($scope) {
+app.controller('aboutController', function ($scope) {
     $scope.message = '';
 });
 
-app.controller('contactController', function($scope) {
+app.controller('contactController', function ($scope) {
     $scope.message = '';
 });
