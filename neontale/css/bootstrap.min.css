@@ -7203,7 +7203,7 @@ option {
 }
 
 .checkbox-custom[type=checkbox]:before {
-    background: #999 url("../checkmark.png");
+    background: #999 url("../img/checkmark.png");
     background-size: 10px 8px;
     background-repeat: no-repeat;
     background-position: 45% 3px;
