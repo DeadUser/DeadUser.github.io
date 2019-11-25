@@ -1,12 +1,5 @@
-/*
- * Color Picker Angular directive
- * 
- * Alberto Pujante
- * 
- * @licence: http://opensource.org/licenses/MIT
- */
 'use strict';
-var colorPicker = angular.module('colorpicker', [])
+var colorPicker = angular.module('color.picker', [])
         .factory('ColorHelper', function () {
 
             return{
@@ -349,10 +342,10 @@ colorPicker.directive('colorPicker', ['$document', '$compile', 'ColorHelper', fu
                         '   <div slider rg-x=1 action="setHue(v, rg)" class="hue">' +
                         '       <div class="cursor" ng-style="{\'left\':hueSlider.left}"></div>' +
                         '   </div>' +
-                        '   <!--<div slider rg-x=1 action="setAlpha(v, rg)" class="alpha" ng-style="{\'background-color\':alphaSliderColor}">' +
+                        '   <!--div slider rg-x=1 action="setAlpha(v, rg)" class="alpha" ng-style="{\'background-color\':alphaSliderColor}">' +
                         '       <div class="cursor" ng-style="{\'left\':alphaSlider.left}"></div>' +
                         '   </div>' +
-                        '   <div class="selected-color-background"></div>' +
+                        '   <<div class="selected-color-background"></div>' +
                         '   <div class="selected-color" ng-style="{\'background-color\':outputColor}"></div>' +
                         '   <div ng-show="type==2" class="hsla-text">' +
                         '       <input text type="number" pattern="[0-9]*" min="0" max="360" step="' + scope.hslaSteps.h + '" rg=360 action="setHue(v, rg)" ng-model="hslaText.h" spinner="' + attr.colorPickerShowInputSpinner + '" />' +
@@ -427,12 +420,12 @@ colorPicker.directive('colorPicker', ['$document', '$compile', 'ColorHelper', fu
                     scope.$apply(function () {
                         scope.show = true;
                     });                    
-                    //scope.$apply(function () {
-                    //    scope.sAndLMax = {x: template[0].getElementsByClassName("saturation-lightness")[0].offsetWidth, y: template[0].getElementsByClassName("saturation-lightness")[0].offsetHeight};
-                    //    scope.hueMax = {x: template[0].getElementsByClassName("hue")[0].offsetWidth};
-                    //    scope.alphaMax = {x: template[0].getElementsByClassName("alpha")[0].offsetWidth};
-                    //    scope.update();
-                    //});
+                    scope.$apply(function () {
+                        scope.sAndLMax = {x: template[0].getElementsByClassName("saturation-lightness")[0].offsetWidth, y: template[0].getElementsByClassName("saturation-lightness")[0].offsetHeight};
+                        scope.hueMax = {x: template[0].getElementsByClassName("hue")[0].offsetWidth};
+                        //scope.alphaMax = {x: template[0].getElementsByClassName("alpha")[0].offsetWidth};
+                        scope.update();
+                    });
                     setDialogPosition();
                     $document.on('mousedown', mousedown);
                     angular.element(window).on('resize', resize);
