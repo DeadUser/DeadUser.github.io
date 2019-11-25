@@ -20,7 +20,7 @@ app.config(function ($routeProvider) {
 
 app.controller('constructorController', function ($scope) {
     $scope.cost = 0;
-    $scope.background = 'img/bg.webp';
+    $scope.background = 'img/temp.jpg';
     $scope.bgname = 'Choose image';
 
     $scope.fileChanged = function (element) {
@@ -49,10 +49,10 @@ app.controller('constructorController', function ($scope) {
     ];
 
     $scope.text = {
-        value: 'Welcome',
+        value: 'We are young',
         font: $scope.fonts[0].name,
-        color: '#630C0C',
-        size: 50,
+        color: '#29fd21',
+        size: 75,
         inshape: true
     };
 

@@ -7050,6 +7050,8 @@ td.visible-print {
 
 .img-wrap {
     position: relative;
+    word-wrap: break-word;
+    overflow-x:hidden;
 }
 
 .img-wrap h1,
@@ -7226,4 +7228,12 @@ option {
 
 input[type="file"] {
     display: none;
+}
+
+.settings {
+    padding-bottom: 30px;
+}
+
+textarea {
+    resize: none;
 }

@@ -1,10 +1,10 @@
 <form class="row" action="mailto:egor.domozhirov@mail.ru?subject=Заказать" method="POST">
-    <div class="col col-md-3">
+    <div class="col col-md-3 padding">
         <div class="text-center"><br>Ваш текст</div>
-        <input name="Text" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.value">
+        <textarea name="Text" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.value"></textarea>
 
-        <div class="text-center"><br>Ваш шрифт</div>
-        <select name="Font" type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.font">
+        <div class="text-center" title="Не все шрифты поддерживают русский"><br>Ваш шрифт *</div>
+        <select name="Font" type="text" class="form-control select" aria-label="Small" aria-describedby="inputGroup-sizing-sm" ng-model="text.font" title="Не все шрифты поддерживают русский">
             <option ng-repeat="font in fonts" class="" ng-style="getFont(font)">{{font.desc}}</option>
         </select>
 
@@ -27,13 +27,11 @@
         <br>
     </div>
     <div class="col col-md-7">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="img-wrap">
-                    <img src="{{background}}" class="img-responsive">
-                    <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b>
-                    </h1>
-                </div>
+        <div class="row">
+            <div class="img-wrap">
+                <img src="{{background}}" class="img-responsive">
+                <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b>
+                </h1>
             </div>
         </div>
     </div>
