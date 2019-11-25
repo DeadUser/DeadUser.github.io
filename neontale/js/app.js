@@ -20,17 +20,19 @@ app.config(function ($routeProvider) {
 
 app.controller('constructorController', function ($scope) {
     $scope.cost = 0;
-    $scope.bgFile = 0;
+    $scope.background = 'img/bg.webp';
+    $scope.bgname = 'Choose image';
 
-    $scope.handleFileSelect = function (evt) {
-        var files = evt.target.files;
-        for (var i = 0, f; f = files[i]; i++) {
-            if (!f.type.match('image.*')) { continue; }
-            var reader = new FileReader();
-            reader.onload = (function (file) { return function (e) { debugger; $scope.bgFile = e.target.result; }; })(f);
-            reader.readAsDataURL(f);
-        }
-    }
+    $scope.fileChanged = function (element) {
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $scope.background = e.srcElement.result;
+            $scope.$apply();
+        };
+        reader.readAsDataURL(file);
+        $scope.bgname = file.name;
+    };
 
     $scope.fonts = [
         { name: `Alpha Echo`, desc: 'Alpha Echo' },

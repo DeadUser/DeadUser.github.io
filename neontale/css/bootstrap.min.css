@@ -7223,3 +7223,7 @@ option {
     border: 1px solid #333;
     border-radius: 2px;
 }
+
+input[type="file"] {
+    display: none;
+}

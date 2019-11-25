@@ -22,16 +22,15 @@
             <input name="InShape" class="checkbox-custom" type="checkbox" ng-model="text.inshape">
         </div>
         <br>
-        <input type="file" id="files" name="files[]" multiple />
-        <output id="list"></output>
-        <img class="thumb" src="{{bgFile}}" />
+        <label for="file-upload" class="btn btn-default col-md-12 col-12 col-sm-12 col-xs-12">{{bgname}}</label>
+        <input id="file-upload" type="file" onchange="angular.element(this).scope().fileChanged(this)" accept="image/*" />
         <br>
     </div>
     <div class="col col-md-7">
         <div class="container-fluid">
             <div class="row">
                 <div class="img-wrap">
-                    <img src="img/s1200.webp" class="img-responsive">
+                    <img src="{{background}}" class="img-responsive">
                     <h1 class="text-center" ng-style="style"><b></b>{{text.value}}</b>
                     </h1>
                 </div>
