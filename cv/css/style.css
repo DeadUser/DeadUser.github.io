@@ -115,7 +115,7 @@ button:focus {
   .main_title h2 {
     font-family: "Heebo", sans-serif;
     font-size: 36px;
-    color: #222222;
+    color: wheat;
     margin-bottom: 15px;
     text-transform: uppercase; }
   .main_title p {
@@ -123,7 +123,7 @@ button:focus {
     font-family: "Roboto", sans-serif;
     font-weight: normal;
     line-height: 26px;
-    color: #777777;
+    color:wheat;
     margin-bottom: 0px; }
 
 /* End Main Title Area css
