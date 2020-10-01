@@ -20,7 +20,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="https:\\edomozh.github.io">Home</a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,10 +29,10 @@
         <div class="navbar-collapse collapse" id="navbarColor01" style="">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Contribution</span></a>
+                    <a class="nav-link" href="https:\\edomozh.github.io\calculator\contribution">Contribution</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../mortgage">Mortgage</a>
+                    <a class="nav-link" href=".https:\\edomozh.github.io\calculator\mortgage">Mortgage</a>
                 </li>
             </ul>
         </div>
@@ -43,34 +43,41 @@
             <div class="col-md-8 order-md-2">
                 <div class="form-group">
                     <label class="form-control-label" for="txt_step">Monthly cash deposits</label>
-                    <input id="txt_step" type="number" class="form-control" value="20000">
+                    <input id="txt_step" type="number" class="form-control" value="20000" onchange="calculate()">
                     <div class="btn-group mt-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary" onclick="increment(1000)">+1k</button>
-                        <button type="button" class="btn btn-primary" onclick="increment(-1000)">-1k</button>
+                        <button type="button" class="btn btn-primary" onclick="increment('txt_step', 1000)">+1k</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="increment('txt_step', -1000)">-1k</button>
                     </div>
                     <div class="btn-group mt-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary" onclick="increment(5000)">+5k</button>
-                        <button type="button" class="btn btn-primary" onclick="increment(-5000)">-5k</button>
+                        <button type="button" class="btn btn-primary" onclick="increment('txt_step', 5000)">+5k</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="increment('txt_step', -5000)">-5k</button>
                     </div>
                     <div class="btn-group mt-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary" onclick="increment(10000)">+10k</button>
-                        <button type="button" class="btn btn-primary" onclick="increment(-10000)">-10k</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="increment('txt_step', 10000)">+10k</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="increment('txt_step', -10000)">-10k</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="txt_step">Percent in year</label>
-                    <input id="txt_percent" type="number" class="form-control" value="10">
+                    <input id="txt_percent" type="number" class="form-control" value="10" onchange="calculate()">
                     <input type="range" class="custom-range" id="txt_percent_range" min="0" max="25"
-                        onchange="setPercent(this)">
+                        onchange="setValue('txt_percent', this.value)">
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="txt_step">Years</label>
-                    <input id="txt_years" type="number" class="form-control" value="5">
+                    <input id="txt_years" type="number" class="form-control" value="5" onchange="calculate()">
+                    <div class="btn-group mt-2" role="group" aria-label="First group">
+                        <button type="button" class="btn btn-primary" onclick="increment('txt_years', 1)">+</button>
+                        <button type="button" class="btn btn-primary" onclick="increment('txt_years', -1)">-</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary w-100" onclick="calculate()">Calculate</button>
-                </div>
-                <h2 class="m-2"><small id="result"></small></h2>
+
+                <h2 class="m-2"><small id="investments"></small></h2>
+                <h2 class="m-2"><small id="contribution"></small></h2>
             </div>
 
             <!-- Ad block -->
@@ -82,32 +89,33 @@
 <script>
     var formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
 
-    function setPercent(p) {
-        document.getElementById('txt_percent').value = p.value;
+    function setValue(element, value) {
+        document.getElementById(element).value = value;
+        calculate();
+    }
+
+    function increment(element, add) {
+        var txt_step = Number(document.getElementById(element).value);
+        txt_step += add;
+        document.getElementById(element).value = txt_step;
+        calculate();
     }
 
     function calculate() {
-        var result = document.getElementById('result');
+        var step = Number(document.getElementById('txt_step').value);
+        var percent = Number(document.getElementById('txt_percent').value) / 100;
+        var years = Number(document.getElementById('txt_years').value);
 
         var contribution = 0;
-        var step = Number(document.getElementById('txt_step').value);
-
-        var years = Number(document.getElementById('txt_years').value);
-        var percent = Number(document.getElementById('txt_percent').value) / 100;
-
         for (var i = 0; i < (years * 12); i++) {
             contribution += (contribution * (percent / 12)) + step;
         }
 
-        result.innerHTML = formatter.format(String(Math.trunc(contribution)));
+        document.getElementById('investments').innerHTML = 'Investments: ' + formatter.format(String(Math.trunc(step * (years * 12))));
+        document.getElementById('contribution').innerHTML = 'Contribution: ' + formatter.format(String(Math.trunc(contribution)));
     }
 
-    function increment(add) {
-        var txt_step = Number(document.getElementById('txt_step').value);
-        txt_step += add;
-        document.getElementById('txt_step').value = txt_step;
-    }
-
+    calculate();
 </script>
 
 </html>
