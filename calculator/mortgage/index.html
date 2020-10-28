@@ -1,26 +1,62 @@
 <!DOCTYPE html>
 
 <html>
-<link rel="stylesheet" crossorigin="anonymous"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
 
-<body class="bg-dark text-light">
-    <div class="container">
+<head>
+    <title>Mortgage</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script data-ad-client="ca-pub-7753948746567334" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https:\\edomozh.github.io">Home</a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https:\\edomozh.github.io\calculator\contribution">Contribution</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https:\\edomozh.github.io\calculator\mortgage">Mortgage</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
         <div class="row w-100">
             <div class="col-md-8 order-md-1 ">
+                <div class="form-group">
+                    <label class="form-control-label" for="txt_step">Years</label>
+                    <input id="txt_years" type="number" class="form-control" value="20" onchange="calculate()">
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="txt_step">Monthly payment</label>
+                    <input id="txt_payment" type="number" class="form-control" value="20000" onchange="calculate()">
+                </div>
 
-                <h4 class="m-2">Mortgage</h4>
-                <input id="txt_mortgage" type="number" class="form-control m-2" placeholder="Mortgage">
-                <input id="txt_first_payment" type="number" class="form-control m-2" placeholder="First payment">
-                <input id="txt_payment" type="number" class="form-control m-2" placeholder="Monthly payment">
-                <button type="button" class="btn btn-light m-2 w-100" onclick="calculate()">Calculate</button>
-
-                <h6 class="m-2"><small id="result"></small></h6>
+                <h6><small id="result"></small></h6>
+                <h6><small id="overpayment"></small></h6>
             </div>
             <div class="col-md-4 order-md-2">
-                <div class="m-2">
-                    <p class="">
+                <div>
+                    <p>
                         <br>conditions:
                         <br>compound interest
                         <br>10% per year
@@ -34,23 +70,22 @@
 <script>
     function calculate() {
         var result = document.getElementById('result');
-        result.innerHTML = '';
+        var overpayment = document.getElementById('overpayment');
 
-        var mortgage = Number(document.getElementById('txt_mortgage').value);
-        var firstPayment = Number(document.getElementById('txt_first_payment').value);
+        var years = Number(document.getElementById('txt_years').value);
         var payment = Number(document.getElementById('txt_payment').value);
 
-        mortgage = mortgage - firstPayment;
-        var overpayment = 0;
-        for (var i = 0; mortgage > 0; i++) {
+        var overpayment = 0, mortgage = 0;
+        for (var i = 0; years > 0; i++) {
             mortgage = mortgage + (mortgage * (0.1 / 12)) - payment;
             overpayment += (mortgage * (0.1 / 12));
-            result.innerHTML += String(i + 1) + ': ' + String(Math.trunc(mortgage)) + ' percent ' + String(Math.trunc((mortgage * (0.1 / 12)))) + '<br>';
         }
 
-        result.innerHTML += 'overpayment: ' + String(Math.trunc(overpayment)) + '<br>';
+        result.innerHTML = String(Math.trunc(mortgage)) + ' percent ' + String(Math.trunc((mortgage * (0.1 / 12))));
+        overpayment.innerHTML = 'Overpayment: ' + String(Math.trunc(overpayment));
     }
 
+    //calculate();
 </script>
 
 </html>
