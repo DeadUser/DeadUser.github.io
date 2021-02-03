@@ -48,21 +48,21 @@
 
 		.heart {
 			margin: 10% 50% 10% 50%;
-			width: 140px;
+			width: 100px;
 			height: 160px;
 			animation: b 1.5s ease-in-out infinite;
 		}
 
 		.heart:before,
 		.heart:after {
-			width: 140px;
+			width: 100px;
 			height: 160px;
-			background: rgb(255, 0, 15);
+			background: rgb(145, 255, 0);
 			position: absolute;
 			content: "";
 			border-radius: 50px 50px 0 0;
 
-			left: 50px;
+			left: 100px;
 			transform: rotate(-45deg);
 			transform-origin: 0 100%;
 		}
@@ -175,7 +175,7 @@
 			var counter = 0;
 			var next = function next() {
 				fx.setText(phrases[counter]).then(function () {
-					setTimeout(next, 1500);
+					setTimeout(next, 5000);
 				});
 				counter = (counter + 1) % phrases.length;
 			};
@@ -188,7 +188,7 @@
 <body onload="start()">
 	<div class="cover"></div>
 	<div class="text"></div>
-	<div><img src="heart.gif" class="heart"></div>
+	<div class="heart"></div>
 </body>
 
 </html>
