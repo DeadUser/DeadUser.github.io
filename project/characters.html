@@ -1,0 +1,16 @@
+<body></body>
+
+<script>
+var i = 12000;
+
+document.body.style.backgroundColor = '00CCCC';
+document.body.style.fontSize = 250;
+document.body.style.margin = 200;
+function changeCharacter(i) {
+    document.body.innerHTML = String.fromCharCode(i);
+}
+
+let timer1 = setInterval(() => changeCharacter(i++), 300);
+
+
+</script>

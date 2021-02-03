@@ -1,0 +1,23 @@
+<script>
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function changeColor() {
+		var newColor = getRandomColor();
+    console.log(newColor);
+    document.body.style.backgroundColor = newColor;
+}
+
+let timer1 = setInterval(() => changeColor(), 140);
+let timer2 = setInterval(() => console.clear(), 5000);
+
+//setTimeout(() => clearInterval(timerId), 5000);
+
+</script>
