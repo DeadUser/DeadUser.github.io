@@ -1,6 +1,6 @@
 # Here are some one-page experiments with JS.
 
-https://edomozh.github.io - my CV
+https://edomozh.github.io/cv - my CV
 
 https://edomozh.github.io/project/discoteka - just blink the background
 
