@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container text-center my-5">
+        <h1 id="timer-display"></h1>
+        <div class="btn-group" role="group" aria-label="Timer controls">
+            <button type="button" class="btn btn-primary" id="start-btn">Start</button>
+            <button type="button" class="btn btn-secondary" id="pause-btn" disabled>Pause</button>
+            <button type="button" class="btn btn-danger" id="stop-btn" disabled>Stop</button>
+        </div>
+        <div class="mt-3 list-group list-group-flush" id="action-history"></div>
+    </div>
+
+    <script>
+        let startTime;
+        let intervalId;
+        let pausedTime = 0;
+        let history = [];
+        const timerDisplay = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const actionHistory = document.getElementById('action-history');
+
+        function startTimer() {
+            startTime = Date.now() - pausedTime;
+            intervalId = setInterval(updateTimerDisplay, 10);
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            stopBtn.disabled = false;
+            history.push({
+                type: 'start',
+                time: new Date().toLocaleTimeString(),
+            });
+            displayHistory();
+        }
+
+        function pauseTimer() {
+            clearInterval(intervalId);
+            pausedTime += Date.now() - startTime;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            history.push({
+                type: 'pause',
+                time: new Date().toLocaleTimeString(),
+            });
+            displayHistory();
+        }
+
+        function stopTimer() {
+            clearInterval(intervalId);
+            pausedTime = 0;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+            timerDisplay.textContent = '00:00:00';
+            history.push({
+                type: 'stop',
+                time: new Date().toLocaleTimeString(),
+            });
+            displayHistory();
+        }
+
+        function updateTimerDisplay() {
+            const elapsedTime = Date.now() - startTime;
+            const hours = Math.floor(elapsedTime / 3600000).toString().padStart(2, '0');
+            const minutes = Math.floor((elapsedTime % 3600000) / 60000).toString().padStart(2, '0');
+            const seconds = Math.floor((elapsedTime % 60000) / 1000).toString().padStart(2, '0');
+            timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+            document.title = `${hours}:${minutes}:${seconds}`;
+        }
+
+        function displayHistory() {
+            var historyHtml = '';
+            history.forEach(function (action) {
+                historyHtml += '<div class="list-group-item">' + action.type + ' at ' + action.time + '</div>';
+            });
+            document.getElementById('action-history').innerHTML = historyHtml;
+        }
+
+        displayHistory();
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        stopBtn.addEventListener('click', stopTimer);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

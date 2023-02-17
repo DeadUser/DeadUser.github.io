@@ -1,13 +1,17 @@
-# Here are some one-page experiments with JS.
+# CV Page
+https://edomozh.github.io/cv
 
-https://edomozh.github.io/cv - my CV
+# Tube calculator
 
-https://edomozh.github.io/project/discoteka - just blink the background
+Calculator that calculates the optimal distribution of pipe segments.
+https://edomozh.github.io/project/tube
 
-https://edomozh.github.io/project/characters - just blink the characters
+# Timer
 
-https://edomozh.github.io/project/tube - a calculator that calculates the optimal distribution of pipe segments
+App for tracking work hours. Implemented with chatGPT. And my fixes that I tired to explain to chat. 
+https://edomozh.github.io/timer
 
-https://edomozh.github.io/calculator/contribution - a calculator of contributions (I found this site (https://calcus.ru/) and stopped do bullshit )
-
-https://edomozh.github.io/calculator/mortgage -  a calculator of mortgages
+# Others
+https://edomozh.github.io/project/discoteka
+https://edomozh.github.io/project/characters 
+https://edomozh.github.io/calculator/mortgage
