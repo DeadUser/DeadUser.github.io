@@ -3,7 +3,7 @@
 
 # Tube calculator 
 
-[Tube calculator](https://edomozh.github.io/project/tube)
+[Tube calculator](https://edomozh.github.io/tube)
 to find optimal distribution of pipe segments.  
 
 
