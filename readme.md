@@ -1,19 +1,19 @@
-# CV Page
-https://edomozh.github.io/cv
+# My CV
+[Click to check](https://edomozh.github.io/cv)
 
-# Tube calculator
+# Tube calculator 
 
-Calculator for optimal distribution of pipe segments.\
-https://edomozh.github.io/project/tube
+[Tube calculator](https://edomozh.github.io/project/tube)
+to find optimal distribution of pipe segments.  
+
 
 # Timer
 
-App for tracking work hours.\
-Implemented with chatGPT and my fixes that I tired to explain to chat.\
-https://edomozh.github.io/timer\
+[Timer](https://edomozh.github.io/timer) to track work hours.  
+
 
 # Others
 
-https://edomozh.github.io/project/discoteka\
-https://edomozh.github.io/project/characters\ 
-https://edomozh.github.io/calculator/mortgage\
+[Discoteca](https://edomozh.github.io/project/discoteka)
+[Characters](https://edomozh.github.io/project/characters)
+[Mortgage](https://edomozh.github.io/calculator/mortgage)
