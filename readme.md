@@ -14,6 +14,9 @@ to find optimal distribution of pipe segments.
 
 # Others
 
-[Discoteca](https://edomozh.github.io/project/discoteka)
-[Characters](https://edomozh.github.io/project/characters)
+[Unicode](https://edomozh.github.io/unicode)
+[Valentine](https://edomozh.github.io/valentine)
+[Discoteca](https://edomozh.github.io/discoteka)
+[Characters](https://edomozh.github.io/characters)
 [Mortgage](https://edomozh.github.io/calculator/mortgage)
+[Conribution](https://edomozh.github.io/calculator/contribution)
