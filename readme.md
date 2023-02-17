@@ -3,12 +3,13 @@ https://edomozh.github.io/cv
 
 # Tube calculator
 
-Calculator that calculates the optimal distribution of pipe segments.
+Calculator for optimal distribution of pipe segments.
 https://edomozh.github.io/project/tube
 
 # Timer
 
-App for tracking work hours. Implemented with chatGPT. And my fixes that I tired to explain to chat. 
+App for tracking work hours.
+Implemented with chatGPT and my fixes that I tired to explain to chat.
 https://edomozh.github.io/timer
 
 # Others
