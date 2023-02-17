@@ -11,18 +11,20 @@
     <div class="container text-center my-5">
         <h1 id="timer-display"></h1>
         <div class="btn-group" role="group" aria-label="Timer controls">
-            <button type="button" class="btn btn-primary" id="start-btn">Start</button>
-            <button type="button" class="btn btn-secondary" id="pause-btn" disabled>Pause</button>
-            <button type="button" class="btn btn-danger" id="stop-btn" disabled>Stop</button>
+            <button type="button" class="btn btn-primary btn-lg" id="start-btn">Start</button>
+            <button type="button" class="btn btn-secondary btn-lg" id="pause-btn" disabled>Pause</button>
+            <button type="button" class="btn btn-danger btn-lg" id="stop-btn" disabled>Stop</button>
         </div>
         <div class="mt-3 list-group list-group-flush" id="action-history"></div>
     </div>
 
     <script>
-        let startTime;
-        let intervalId;
+
+        let startTime = 0;
         let pausedTime = 0;
+        let intervalId;
         let history = [];
+
         const timerDisplay = document.getElementById('timer-display');
         const startBtn = document.getElementById('start-btn');
         const pauseBtn = document.getElementById('pause-btn');
@@ -32,39 +34,40 @@
         function startTimer() {
             startTime = Date.now() - pausedTime;
             intervalId = setInterval(updateTimerDisplay, 10);
+
+            startBtn.innerHTML = "Start";
             startBtn.disabled = true;
             pauseBtn.disabled = false;
             stopBtn.disabled = false;
-            history.push({
-                type: 'start',
-                time: new Date().toLocaleTimeString(),
-            });
+
+            history.push({ type: 'start', time: new Date().toLocaleTimeString(), });
             displayHistory();
         }
 
         function pauseTimer() {
             clearInterval(intervalId);
-            pausedTime += Date.now() - startTime;
+            pausedTime = Date.now() - startTime;
+
+            startBtn.innerHTML = "Resume";
             startBtn.disabled = false;
             pauseBtn.disabled = true;
-            history.push({
-                type: 'pause',
-                time: new Date().toLocaleTimeString(),
-            });
+
+            history.push({ type: 'pause', time: new Date().toLocaleTimeString(), });
             displayHistory();
         }
 
         function stopTimer() {
             clearInterval(intervalId);
             pausedTime = 0;
+            startTime = 0;
+            timerDisplay.textContent = '00:00:00';
+
+            startBtn.innerHTML = "Start";
             startBtn.disabled = false;
             pauseBtn.disabled = true;
             stopBtn.disabled = true;
-            timerDisplay.textContent = '00:00:00';
-            history.push({
-                type: 'stop',
-                time: new Date().toLocaleTimeString(),
-            });
+
+            history.push({ type: 'stop', time: new Date().toLocaleTimeString(), });
             displayHistory();
         }
 
