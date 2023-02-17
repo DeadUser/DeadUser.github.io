@@ -30,7 +30,9 @@
         const pauseBtn = document.getElementById('pause-btn');
         const stopBtn = document.getElementById('stop-btn');
         const actionHistory = document.getElementById('action-history');
-
+        
+        timerDisplay.textContent = '00:00:00';
+        
         function startTimer() {
             startTime = Date.now() - pausedTime;
             intervalId = setInterval(updateTimerDisplay, 10);
