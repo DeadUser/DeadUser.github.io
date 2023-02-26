@@ -7,9 +7,9 @@
 to find optimal distribution of pipe segments.  
 
 
-# Timer
+# Productivity tool
 
-[Timer](https://edomozh.github.io/timer) to track work hours.  
+[Timer](https://edomozh.github.io/workday) to track work hours.  
 
 
 # Others

@@ -1,0 +1,70 @@
+:root {
+    --background: #E1BB80;
+    --borders: #352208;
+    --text: #352208;
+    --element1: #7B6B43;
+    --element2: #685634;
+    --element3: #806443;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid var(--borders);
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.work {
+    float: left;
+    width: 50%;
+    min-height: 300px;
+
+    padding-right: 20px;
+    box-sizing: border-box;
+
+}
+
+.done {
+    float: right;
+    width: 50%;
+    min-height: 300px;
+
+    padding-left: 20px;
+    box-sizing: border-box;
+
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.stop {
+    background-color: var(--element1);
+    color: var(--text);
+}
+
+.pause {
+    background-color: var(--element2);
+    color: var(--text);
+}
+
+.start {
+    background-color: var(--element3);
+    color: var(--text);
+}
