@@ -1,7 +1,9 @@
 const tasks = [
-    { name: 'Answer a Mail', color: 'var(--element1)', count: 7 },
-    { name: 'Git Commit', color: 'var(--element2)', count: 7 },
-    { name: 'Read a Guide', color: 'var(--element3)', count: 6 }
+    { name: 'reply one letter', color: 'var(--element1)', count: 8 },
+    { name: 'fix one issue', color: 'var(--element2)', count: 4 },
+    { name: 'read one guide', color: 'var(--element4)', count: 4 }, 
+    { name: 'make one commit', color: 'var(--element6)', count: 4 },
+    { name: 'push some work', color: 'var(--element3)', count: 4 },
 ];
 
 const workBoxesContainer = document.getElementById('work-boxes');

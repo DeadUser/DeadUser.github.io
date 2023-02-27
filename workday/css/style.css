@@ -1,10 +1,14 @@
 :root {
-    --background: #051923;
-    --borders: #051923;
-    --text: #9bdeff;
-    --element1: #0065a0;
-    --element2: #004e72;
-    --element3: #003554;
+    --background: #BA9B8D;
+    --borders: #BA9B8D;
+    --text: #201b19;
+    --element1: #6F323C;
+    --element2: #585651;
+    --element3: #814A38;
+
+    --element4: #52262d;
+    --element5: #4b4944;
+    --element6: #643a2c;
 }
 
 body {
@@ -26,6 +30,7 @@ body {
     text-align: center;
     font-weight: bold;
     cursor: pointer;
+    user-select: none;
 }
 
 .work {
