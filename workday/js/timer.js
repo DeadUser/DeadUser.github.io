@@ -6,7 +6,7 @@ let history = [];
 const timerDisplay = document.getElementById('timer-display');
 const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
-const stopBtn = document.getElementById('stop-btn');
+//const stopBtn = document.getElementById('stop-btn');
 const actionHistory = document.getElementById('action-history');
 
 timerDisplay.textContent = '00:00:00';
@@ -18,7 +18,7 @@ function startTimer() {
     startBtn.innerHTML = "Start";
     startBtn.disabled = true;
     pauseBtn.disabled = false;
-    stopBtn.disabled = false;
+    //stopBtn.disabled = false;
 
     history.push({ type: !pausedTime ? 'start' : 'resume', time: new Date().toLocaleTimeString(), });
     displayHistory();
@@ -45,7 +45,7 @@ function stopTimer() {
     startBtn.innerHTML = "Start";
     startBtn.disabled = false;
     pauseBtn.disabled = true;
-    stopBtn.disabled = true;
+    //stopBtn.disabled = true;
 
     history.push({ type: 'stop', time: new Date().toLocaleTimeString(), });
     displayHistory();
@@ -71,4 +71,4 @@ function displayHistory() {
 displayHistory();
 startBtn.addEventListener('click', startTimer);
 pauseBtn.addEventListener('click', pauseTimer);
-stopBtn.addEventListener('click', stopTimer);
+//stopBtn.addEventListener('click', stopTimer);
