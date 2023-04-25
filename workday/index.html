@@ -27,8 +27,45 @@
                 </div>
             </div>
 
+            <!-- Checkboxes Area -->
+            <div class="container col-3">
+                <h1>Everyday tasks</h1>
+
+                <div class="form-group m-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label ml-2">Log yesterday's
+                            activities</label>
+                    </div>
+                </div>
+
+                <div class="form-group m-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label ml-2">Read and answer all letters</label>
+                    </div>
+                </div>
+
+                <div class="form-group m-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <input type="text" class="form-control ml-2" placeholder="Write your main task for today">
+                    </div>
+                </div>
+
+                <div class="form-group m-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <input type="text" class="form-control ml-2" placeholder="Write your second task for today">
+                    </div>
+                </div>
+
+                <button class="btn lock btn-lg m-2" onclick="lockTextboxes(this)">Lock</button>
+            </div>
+
+
             <!-- Tasks Area -->
-            <div class="container text-center col-9">
+            <div class="container text-center col-6">
                 <div class="work">
                     <h1>Work</h1>
                     <div class="row" id="work-boxes">
@@ -48,6 +85,7 @@
 
     <script src="js/tasks.js"></script>
     <script src="js/timer.js"></script>
+    <script src="js/everyday.js"></script>
 </body>
 
 </html>

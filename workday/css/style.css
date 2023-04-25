@@ -21,8 +21,8 @@ body {
 }
 
 .box {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     margin: 5px;
     padding: 10px;
     border: 1px solid var(--borders);
@@ -68,4 +68,21 @@ body {
 .stop {
     background-color: var(--element3);
     color: var(--text);
+}
+
+.lock {
+    background-color: var(--element2);
+    color: var(--text);
+}
+
+input[type=checkbox] {
+    transform: scale(2);
+    accent-color: var(--background);
+}
+
+input[type=text] {
+    background-color: var(--background);
+    color: var(--text);
+    font-weight: bold;
+    border: 0;
 }
