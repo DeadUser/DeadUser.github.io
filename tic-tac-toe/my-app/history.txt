@@ -1,0 +1,4 @@
+npx create-react-app my-app
+cd my-app
+npm start
+npm install --save-dev @babel/plugin-proposal-private-property-in-object
